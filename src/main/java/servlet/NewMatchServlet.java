@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.NewMatchService;
+import validator.NewMatchValidator;
 
 import java.io.IOException;
 
@@ -15,7 +16,13 @@ public class NewMatchServlet extends HttpServlet {
     private NewMatchService newMatchService;
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/new-match.html").forward(req,resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        NewMatchValidator.validatePlayersAreDifferent(req);
         String s = req.getServletPath();
     }
     @Override

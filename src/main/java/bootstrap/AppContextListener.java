@@ -5,9 +5,11 @@ import infrastructure.ServiceContainer;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+@WebListener
 public class AppContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {

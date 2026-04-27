@@ -1,3 +1,5 @@
+package filter;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -8,10 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 
 @WebFilter("/*")
 public class CorsFilter implements Filter {

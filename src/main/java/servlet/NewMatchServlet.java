@@ -1,5 +1,6 @@
 package servlet;
 
+import bootstrap.AppContainer;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,14 +12,15 @@ import java.io.IOException;
 
 @WebServlet("/new-match")
 public class NewMatchServlet extends HttpServlet {
-    private final NewMatchService newMatchService;
-
-    public NewMatchServlet(NewMatchService newMatchService) {
-        this.newMatchService = newMatchService;
-    }
+    private NewMatchService newMatchService;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        String s = req.getServletPath();
+    }
+    @Override
+    public void init(){
+        AppContainer appContainer = (AppContainer) getServletContext().getAttribute("appContainer");
+        newMatchService = appContainer.services().getNewMatchService();
     }
 }

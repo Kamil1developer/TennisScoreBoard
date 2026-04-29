@@ -1,12 +1,9 @@
 package service;
 
-import dao.impl.PlayerDao;
+import dao.PlayerDao;
 import dto.NewMatchRequestDto;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
+import entity.Player;
 import validator.NewMatchValidator;
-
-import java.io.IOException;
 
 public class NewMatchService {
     private final PlayerDao playerDao;
@@ -16,6 +13,16 @@ public class NewMatchService {
     }
     public void checkPlayerExists(NewMatchRequestDto requestDto){
         NewMatchValidator.validatePlayersAreDifferent(requestDto);
+
+        String firstPlayerName =  requestDto.firstPlayerName();
+        String secondPlayerName = requestDto.secondPlayerName();
+
+        Player firstPlayer = new Player(firstPlayerName);
+        Player secondPlayer = new Player(secondPlayerName);
+
+        playerDao.insert(firstPlayer);
+        playerDao.insert(secondPlayer);
+
     }
 
 

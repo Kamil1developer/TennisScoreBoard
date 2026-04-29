@@ -1,5 +1,6 @@
 package entity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 @Table(name = "Players")
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,4 +17,9 @@ public class Player {
 
     @Column(name = "Name", nullable = false)
     private String name;
+
+    public Player(String name){
+        this.name = name;
+    }
+
 }

@@ -12,6 +12,7 @@ import service.NewMatchService;
 import validator.NewMatchValidator;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @WebServlet("/new-match")
 public class NewMatchServlet extends HttpServlet {
@@ -30,7 +31,10 @@ public class NewMatchServlet extends HttpServlet {
         NewMatchRequestDto requestDto = new NewMatchRequestDto(firstPlayerName, secondPlayerName);
 
         try {
-            newMatchService.checkPlayerExists(requestDto);
+            UUID matchID = newMatchService.createPlayers(requestDto);
+            String s = req.getContextPath();
+
+            resp.sendRedirect(req.getContextPath() + "/match-score?uuid=" + matchID);
 
         }
         catch (NewMatchValidationException e){

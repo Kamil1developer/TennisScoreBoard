@@ -7,14 +7,26 @@ import matches.CurrentMatch;
 import scores.Scores;
 import validator.NewMatchValidator;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class NewMatchService {
     private final PlayerDao playerDao;
-
     public NewMatchService(PlayerDao playerDao) {
         this.playerDao = playerDao;
     }
 
-    public void checkPlayerExists(NewMatchRequestDto requestDto) {
+    private record Players(Player firstPlayer, Player secondPlayer){}
+
+    public void createPlayer(NewMatchRequestDto requestDto){
+        Players players = checkPlayerExists(requestDto);
+//        createMatch()
+
+    }
+
+
+    public Players checkPlayerExists(NewMatchRequestDto requestDto) {
         NewMatchValidator.validatePlayersAreDifferent(requestDto);
 
         String firstPlayerName = requestDto.firstPlayerName();
@@ -26,18 +38,31 @@ public class NewMatchService {
         firstPlayer = playerDao.insert(firstPlayer);
         secondPlayer = playerDao.insert(secondPlayer);
 
-        createMatch(firstPlayer, secondPlayer);
-
+        return new Players(firstPlayer, secondPlayer);
 
     }
 
-    public void createMatch(Player firstPlayer, Player secondPlayer) {
+    public UUID createMatch(Players players) {
+        Player firstPlayer = players.firstPlayer;
+        Player secondPlayer = players.secondPlayer;
+
         CurrentMatch currentMatch = new CurrentMatch(
                 firstPlayer.getId(),
                 secondPlayer.getId(),
                 new Scores(0, 0, 0),
                 new Scores(0, 0, 0)
         );
+
+        UUID uuid = UUID.randomUUID();
+        Map<UUID, CurrentMatch> currentMatchesMap = new HashMap<>();
+
+        currentMatchesMap.put(uuid, currentMatch);
+
+        return  uuid;
+
+
+
+
     }
 
 

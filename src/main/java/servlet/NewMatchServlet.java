@@ -31,6 +31,7 @@ public class NewMatchServlet extends HttpServlet {
 
         try {
             newMatchService.checkPlayerExists(requestDto);
+
         }
         catch (NewMatchValidationException e){
             req.setAttribute("errorMessage", e.getMessage());

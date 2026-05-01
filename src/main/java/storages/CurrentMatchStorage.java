@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class CurrentMatchStorage {
-    private Map<UUID, CurrentMatch> currentMatchesMap = new HashMap<>();
+    private final Map<UUID, CurrentMatch> currentMatchesMap = new HashMap<>();
 
     public void put(UUID uuid, CurrentMatch currentMatch){
         currentMatchesMap.put(uuid, currentMatch);
@@ -17,7 +17,7 @@ public class CurrentMatchStorage {
         currentMatchesMap.remove(uuid);
     }
 
-    public Map<UUID, CurrentMatch> getCurrentMatchesMap() {
+    public Map<UUID, CurrentMatch> getMap() {
         return currentMatchesMap;
     }
 }

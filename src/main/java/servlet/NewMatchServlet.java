@@ -32,7 +32,6 @@ public class NewMatchServlet extends HttpServlet {
 
         try {
             UUID matchID = newMatchService.createPlayers(requestDto);
-            String s = req.getContextPath();
 
             resp.sendRedirect(req.getContextPath() + "/match-score?uuid=" + matchID);
 

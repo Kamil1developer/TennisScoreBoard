@@ -1,4 +1,15 @@
 package scores;
 
-public record Scores(int sets, int games, int points) {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class Scores{
+    private int sets;
+    private int games;
+    private int  points;
+
 }

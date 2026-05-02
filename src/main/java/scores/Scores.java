@@ -8,8 +8,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Scores{
-    private int sets;
-    private int games;
-    private int  points;
+    private int sets = 0;
+    private int games = 0;
+    private int points = 0;
+    private boolean ad = false;
 
+    public void addGames(int games) {
+        this.games += games;
+    }
 }

@@ -20,17 +20,46 @@ public class MatchScoreService {
     public void addScore(String uuid, String playerId){
         CurrentMatch currentMatch = currentMatchStorage.getMap().get(UUID.fromString(uuid));
 
-        if (Long.getLong(playerId).equals(currentMatch.firstPlayerId())) {
-            Scores firstPlayerScores = currentMatch.firstPlayerScores();
+
+        Long firstPlayerId = currentMatch.firstPlayerId();
+        Long secondPlayerId = currentMatch.secondPlayerId();
+        Scores firstPlayerScores = currentMatch.firstPlayerScores();
+        Scores secondPlayerScores = currentMatch.secondPlayerScores();
+
+        if (firstPlayerId == Long.parseLong(playerId)) {
+            addPoints(firstPlayerScores, secondPlayerScores);
         }
 
-        if (Long.getLong(playerId).equals(currentMatch.firstPlayerId())) {
-            Scores secondPlayerScores = currentMatch.secondPlayerScores();
+        if (secondPlayerId == Long.parseLong(playerId)) {
+            addPoints(secondPlayerScores, firstPlayerScores);
         }
     }
 
-    private void addPoints(Scores playerScores){
-        if (playerScores.getPoints() < 30){
+    private void addPoints(Scores currentPlayerScore,Scores opponentPlayerScore ){
+        int points = currentPlayerScore.getPoints();
+        int opponentPoints = opponentPlayerScore.getPoints();
+        boolean advantage = currentPlayerScore.isAd();
+        boolean opponentAdvantage = opponentPlayerScore.isAd();
+
+        if (points < 15){
+            currentPlayerScore.setPoints(15);
+        }
+        else if (15 < points && points < 30){
+            currentPlayerScore.setPoints(30);
+        }
+        else if (points == 40 && opponentPoints < 40){
+            currentPlayerScore.setPoints(0);
+            currentPlayerScore.addGames(1);
+        }
+        else if (points == 40 && opponentPoints == 40){
+            currentPlayerScore.setAd(true);
+        }
+        else if (advantage && opponentPoints == 40){
+            currentPlayerScore.addGames(1);
+        }
+        else if (advantage && opponentAdvantage){
+            currentPlayerScore.setAd(false);
+            opponentPlayerScore.setAd(false);
         }
     }
 }

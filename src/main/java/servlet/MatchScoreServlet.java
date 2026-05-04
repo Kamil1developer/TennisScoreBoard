@@ -19,36 +19,31 @@ import java.util.UUID;
 public class MatchScoreServlet extends HttpServlet {
     private MatchScoreService matchScoreService;
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         String uuid = req.getParameter("uuid");
-        UUID matchId = UUID.fromString(uuid);
+        CurrentMatchViewDto matchViewDto = matchScoreService.getCurrentMatchView(uuid);
+        renderView(req,resp, matchViewDto);
 
-        CurrentMatchStorage matchStorage = matchScoreService.getCurrentMatchStorage();
-        CurrentMatch currentMatch = matchStorage.getMap().get(matchId);
 
-        CurrentMatchViewDto matchViewDto = matchScoreService.getCurrentMatchView(
-                currentMatch.getFirstPlayerId(),
-                currentMatch.getSecondPlayerId(),
-                uuid
-        );
-
-        req.setAttribute("currentMatchView", matchViewDto);
-        req.setAttribute("currentMatch", currentMatch);
-        req.setAttribute("uuid", uuid);
-        req.getRequestDispatcher("/match-score.jsp").forward(req,resp);
 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-
-        String playerId = req.getParameter("playerId");
         String uuid = req.getParameter("uuid");
-        matchScoreService.addScore(uuid, playerId);
+        String playerId = req.getParameter("playerId");
 
+        matchScoreService.addScore(uuid, playerId);
+        CurrentMatchViewDto matchViewDto = matchScoreService.getCurrentMatchView(uuid);
+
+        renderView(req,resp, matchViewDto);
+
+    }
+    private void renderView(HttpServletRequest req,HttpServletResponse resp, CurrentMatchViewDto matchViewDto) throws ServletException, IOException {
+        req.setAttribute("currentMatchView", matchViewDto);
 
         req.getRequestDispatcher("/match-score.jsp").forward(req,resp);
-
     }
 
 

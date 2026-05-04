@@ -21,7 +21,8 @@ public class MatchScoreService {
     }
 
     public void addScore(String uuid, String playerId){
-        CurrentMatch currentMatch = currentMatchStorage.getMap().get(UUID.fromString(uuid));
+        UUID matchId = UUID.fromString(uuid);
+        CurrentMatch currentMatch = currentMatchStorage.getMap().get(matchId);
 
 
         Long firstPlayerId = currentMatch.getFirstPlayerId();
@@ -69,9 +70,13 @@ public class MatchScoreService {
 
     }
 
-    public CurrentMatchViewDto getCurrentMatchView(Long firstPlayerId, Long secondPlayerId, String uuid){
+    public CurrentMatchViewDto getCurrentMatchView(String uuid) {
         UUID matchId = UUID.fromString(uuid);
-        CurrentMatch currentMatch = currentMatchStorage.getMap().get(matchId);
+        CurrentMatchStorage matchStorage = getCurrentMatchStorage();
+        CurrentMatch currentMatch = matchStorage.getMap().get(matchId);
+
+        Long firstPlayerId = currentMatch.getFirstPlayerId();
+        Long secondPlayerId = currentMatch.getSecondPlayerId();
 
         Player firstPlayer = playerDao.findByID(firstPlayerId);
         Player secondPlayer = playerDao.findByID(secondPlayerId);
@@ -85,8 +90,6 @@ public class MatchScoreService {
                 firstPlayerScores,
                 secondPlayerScores
         );
-
-
     }
 
 

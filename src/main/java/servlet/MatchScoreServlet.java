@@ -34,7 +34,7 @@ public class MatchScoreServlet extends HttpServlet {
         );
 
         req.setAttribute("currentMatchView", matchViewDto);
-        req.setAttribute("secondPlayerId", currentMatch);
+        req.setAttribute("currentMatch", currentMatch);
         req.setAttribute("uuid", uuid);
         req.getRequestDispatcher("/match-score.jsp").forward(req,resp);
 

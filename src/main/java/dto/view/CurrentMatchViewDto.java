@@ -2,10 +2,16 @@ package dto.view;
 
 import scores.Scores;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import scores.Scores;
 
-public record CurrentMatchViewDto(
-        String firstPlayerName,
-        String secondPlayerName,
-        Scores firstPlayerScores,
-        Scores secondPlayerScores
-        ) {}
+@AllArgsConstructor
+@Getter
+public class CurrentMatchViewDto {
+    private final String firstPlayerName;
+    private final String secondPlayerName;
+    private final Scores firstPlayerScores;
+    private final Scores secondPlayerScore;
+}
+

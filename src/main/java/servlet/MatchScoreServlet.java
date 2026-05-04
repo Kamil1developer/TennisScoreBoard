@@ -25,7 +25,6 @@ public class MatchScoreServlet extends HttpServlet {
 
         CurrentMatchStorage matchStorage = matchScoreService.getCurrentMatchStorage();
         CurrentMatch currentMatch = matchStorage.getMap().get(matchId);
-        req.setAttribute("currentMatch", currentMatch);
 
         CurrentMatchViewDto matchViewDto = matchScoreService.getCurrentMatchView(
                 currentMatch.getFirstPlayerId(),

@@ -26,19 +26,21 @@ public class MatchScoreService {
 
         Long firstPlayerId = currentMatch.firstPlayerId();
         Long secondPlayerId = currentMatch.secondPlayerId();
-        Scores firstPlayerScores = currentMatch.firstPlayerScores();
-        Scores secondPlayerScores = currentMatch.secondPlayerScores();
+
 
         if (firstPlayerId == Long.parseLong(playerId)) {
-            addPoints(firstPlayerScores, secondPlayerScores);
+            addPoints(currentMatch);
         }
 
         if (secondPlayerId == Long.parseLong(playerId)) {
-            addPoints(secondPlayerScores, firstPlayerScores);
+            addPoints(currentMatch);
         }
     }
 
-    private void addPoints(Scores currentPlayerScore,Scores opponentPlayerScore ){
+    private void addPoints(CurrentMatch currentMatch){
+        Scores currentPlayerScore = currentMatch.firstPlayerScores();
+        Scores opponentPlayerScore = currentMatch.secondPlayerScores();
+
         int points = currentPlayerScore.getPoints();
         int opponentPoints = opponentPlayerScore.getPoints();
         boolean advantage = currentPlayerScore.isAd();
@@ -64,10 +66,12 @@ public class MatchScoreService {
             currentPlayerScore.setAd(false);
             opponentPlayerScore.setAd(false);
         }
+
     }
 
-    public CurrentMatchViewDto getCurrentMatchView(Long firstPlayerId, Long secondPlayerId, UUID uuid){
-        CurrentMatch currentMatch = currentMatchStorage.getMap().get(uuid);
+    public CurrentMatchViewDto getCurrentMatchView(Long firstPlayerId, Long secondPlayerId, String uuid){
+        UUID matchId = UUID.fromString(uuid);
+        CurrentMatch currentMatch = currentMatchStorage.getMap().get(matchId);
 
         Player firstPlayer = playerDao.findByID(firstPlayerId);
         Player secondPlayer = playerDao.findByID(secondPlayerId);

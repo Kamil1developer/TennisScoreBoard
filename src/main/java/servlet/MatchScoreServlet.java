@@ -1,6 +1,7 @@
 package servlet;
 
 import bootstrap.AppContainer;
+import dto.view.CurrentMatchViewDto;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,10 +25,16 @@ public class MatchScoreServlet extends HttpServlet {
 
         CurrentMatchStorage matchStorage = matchScoreService.getCurrentMatchStorage();
         CurrentMatch currentMatch = matchStorage.getMap().get(matchId);
+        req.setAttribute("currentMatch", currentMatch);
 
+        CurrentMatchViewDto matchViewDto = matchScoreService.getCurrentMatchView(
+                currentMatch.firstPlayerId(),
+                currentMatch.secondPlayerId(),
+                uuid
+        );
 
-        req.setAttribute("firstPlayerId", currentMatch.firstPlayerId());
-        req.setAttribute("secondPlayerId", currentMatch.secondPlayerId());
+        req.setAttribute("currentMatchView", matchViewDto);
+        req.setAttribute("secondPlayerId", currentMatch);
         req.setAttribute("uuid", uuid);
         req.getRequestDispatcher("/match-score.jsp").forward(req,resp);
 

@@ -15,16 +15,30 @@ public class HibernatePlayerDao implements PlayerDao {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<Player> findAll() {
-        return List.of();
-    }
-
 
     public Player insert(Player player) {
         Transaction transaction = null;
         try(Session session = sessionFactory.openSession() ) {
             transaction = session.beginTransaction();
             session.persist(player);
+
+            transaction.commit();
+
+            return player;
+        }
+        catch (Exception e){
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
+    public Player findByID(Long id){
+        Transaction transaction = null;
+        try(Session session = sessionFactory.openSession() ) {
+            transaction = session.beginTransaction();
+            Player player = session.get(Player.class, id);
 
             transaction.commit();
 

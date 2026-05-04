@@ -46,10 +46,10 @@
                 </thead>
                 <tbody>
                 <tr class="player1">
-                    <td class="table-text">${firstPlayerName}</td>
-                    <td class="table-text">${firstPlayerSets}</td>
-                    <td class="table-text">${firstPlayerGames}</td>
-                    <td class="table-text">${firstPlayerPoints}</td>
+                    <td class="table-text">${matchView.firstPlayerName}</td>
+                    <td class="table-text">${matchView.score.firstPlayerSets}</td>
+                    <td class="table-text">${matchView.score.firstPlayerGames}</td>
+                    <td class="table-text">${matchView.score.firstPlayerPoints}</td>
                     <td class="table-text">
                         <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${uuid}">
                             <input type="hidden" name="playerId" value="${firstPlayerId}">
@@ -58,10 +58,10 @@
                     </td>
                 </tr>
                 <tr class="player2">
-                    <td class="table-text">${secondPlayerName}</td>
-                    <td class="table-text">${secondPlayerSets}</td>
-                    <td class="table-text">${secondPlayerGames}</td>
-                    <td class="table-text">${secondPlayerPoints}</td>
+                    <td class="table-text">${matchView.secondPlayerName}</td>
+                    <td class="table-text">${matchView.score.secondPlayerSets}</td>
+                    <td class="table-text">${matchView.score.secondPlayerGames}</td>
+                    <td class="table-text">${matchView.score.secondPlayerPoints}</td>
                     <td class="table-text">
                        <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${uuid}">
                            <input type="hidden" name="playerId" value="${secondPlayerId}">

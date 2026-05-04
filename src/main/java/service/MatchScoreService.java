@@ -1,5 +1,9 @@
 package service;
 
+import dao.PlayerDao;
+import dto.view.CurrentMatchViewDto;
+import entity.Player;
+import lombok.Getter;
 import matches.CurrentMatch;
 import scores.Scores;
 import storages.CurrentMatchStorage;
@@ -7,14 +11,13 @@ import storages.CurrentMatchStorage;
 import java.util.UUID;
 
 public class MatchScoreService {
-    private final  CurrentMatchStorage currentMatchStorage;
+    @Getter
+    private final CurrentMatchStorage currentMatchStorage;
+    private final PlayerDao playerDao;
 
-    public MatchScoreService(CurrentMatchStorage currentMatchStorage) {
+    public MatchScoreService(PlayerDao playerDao, CurrentMatchStorage currentMatchStorage) {
         this.currentMatchStorage = currentMatchStorage;
-    }
-
-    public CurrentMatchStorage getCurrentMatchStorage() {
-        return currentMatchStorage;
+        this.playerDao = playerDao;
     }
 
     public void addScore(String uuid, String playerId){
@@ -62,4 +65,25 @@ public class MatchScoreService {
             opponentPlayerScore.setAd(false);
         }
     }
+
+    public CurrentMatchViewDto getCurrentMatchView(Long firstPlayerId, Long secondPlayerId, UUID uuid){
+        CurrentMatch currentMatch = currentMatchStorage.getMap().get(uuid);
+
+        Player firstPlayer = playerDao.findByID(firstPlayerId);
+        Player secondPlayer = playerDao.findByID(secondPlayerId);
+
+        Scores firstPlayerScores = currentMatch.firstPlayerScores();
+        Scores secondPlayerScores = currentMatch.secondPlayerScores();
+
+        return new CurrentMatchViewDto(
+                firstPlayer.getName(),
+                secondPlayer.getName(),
+                firstPlayerScores,
+                secondPlayerScores
+        );
+
+
+    }
+
+
 }

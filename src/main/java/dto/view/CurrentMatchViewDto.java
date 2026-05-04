@@ -12,6 +12,6 @@ public class CurrentMatchViewDto {
     private final String firstPlayerName;
     private final String secondPlayerName;
     private final Scores firstPlayerScores;
-    private final Scores secondPlayerScore;
+    private final Scores secondPlayerScores;
 }
 

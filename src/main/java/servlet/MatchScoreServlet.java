@@ -28,8 +28,8 @@ public class MatchScoreServlet extends HttpServlet {
         req.setAttribute("currentMatch", currentMatch);
 
         CurrentMatchViewDto matchViewDto = matchScoreService.getCurrentMatchView(
-                currentMatch.firstPlayerId(),
-                currentMatch.secondPlayerId(),
+                currentMatch.getFirstPlayerId(),
+                currentMatch.getSecondPlayerId(),
                 uuid
         );
 

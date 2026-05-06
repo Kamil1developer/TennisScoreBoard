@@ -23,10 +23,7 @@ public class MatchScoreServlet extends HttpServlet {
             throws ServletException, IOException {
         String uuid = req.getParameter("uuid");
         CurrentMatchViewDto matchViewDto = matchScoreService.getCurrentMatchView(uuid);
-        renderView(req,resp, matchViewDto);
-
-
-
+        renderView(req,resp, matchViewDto, uuid);
     }
 
     @Override
@@ -37,11 +34,12 @@ public class MatchScoreServlet extends HttpServlet {
         matchScoreService.addScore(uuid, playerId);
         CurrentMatchViewDto matchViewDto = matchScoreService.getCurrentMatchView(uuid);
 
-        renderView(req,resp, matchViewDto);
+        renderView(req,resp, matchViewDto,uuid);
 
     }
-    private void renderView(HttpServletRequest req,HttpServletResponse resp, CurrentMatchViewDto matchViewDto) throws ServletException, IOException {
+    private void renderView(HttpServletRequest req,HttpServletResponse resp, CurrentMatchViewDto matchViewDto, String uuid) throws ServletException, IOException {
         req.setAttribute("currentMatchView", matchViewDto);
+        req.setAttribute("uuid", uuid);
 
         req.getRequestDispatcher("/match-score.jsp").forward(req,resp);
     }

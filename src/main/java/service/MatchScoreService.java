@@ -40,8 +40,8 @@ public class MatchScoreService {
     }
 
     private void addPoints(CurrentMatch currentMatch){
-        Score currentPlayerScore = currentMatch.getFirstPlayerScores();
-        Score opponentPlayerScore = currentMatch.getSecondPlayerScores();
+        Score currentPlayerScore = currentMatch.getFirstPlayerScore();
+        Score opponentPlayerScore = currentMatch.getSecondPlayerScore();
 
         int points = currentPlayerScore.getPoints();
         int opponentPoints = opponentPlayerScore.getPoints();
@@ -81,16 +81,16 @@ public class MatchScoreService {
         Player firstPlayer = playerDao.findByID(firstPlayerId);
         Player secondPlayer = playerDao.findByID(secondPlayerId);
 
-        Score firstPlayerScores = currentMatch.getFirstPlayerScores();
-        Score secondPlayerScores = currentMatch.getSecondPlayerScores();
+        Score firstPlayerScore = currentMatch.getFirstPlayerScore();
+        Score secondPlayerScore = currentMatch.getSecondPlayerScore();
 
         PlayerViewDto firstPlayerDto = new PlayerViewDto(firstPlayerId, firstPlayer);
         PlayerViewDto secondPlayerDto = new PlayerViewDto(secondPlayerId, secondPlayer);
         return new CurrentMatchViewDto(
                 firstPlayerDto,
                 secondPlayerDto,
-                firstPlayerScores,
-                secondPlayerScores
+                firstPlayerScore,
+                secondPlayerScore
         );
     }
 

@@ -13,6 +13,6 @@ import scores.Score;
 public class CurrentMatch{
     private final Long firstPlayerId;
     private final Long secondPlayerId;
-    private final Score firstPlayerScores;
-    private final Score secondPlayerScores;
+    private final Score firstPlayerScore;
+    private final Score secondPlayerScore;
 }

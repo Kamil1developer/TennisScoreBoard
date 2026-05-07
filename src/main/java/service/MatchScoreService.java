@@ -2,10 +2,11 @@ package service;
 
 import dao.PlayerDao;
 import dto.view.CurrentMatchViewDto;
+import dto.view.PlayerViewDto;
 import entity.Player;
 import lombok.Getter;
 import matches.CurrentMatch;
-import scores.Scores;
+import scores.Score;
 import storages.CurrentMatchStorage;
 
 import java.util.UUID;
@@ -39,8 +40,8 @@ public class MatchScoreService {
     }
 
     private void addPoints(CurrentMatch currentMatch){
-        Scores currentPlayerScore = currentMatch.getFirstPlayerScores();
-        Scores opponentPlayerScore = currentMatch.getSecondPlayerScores();
+        Score currentPlayerScore = currentMatch.getFirstPlayerScores();
+        Score opponentPlayerScore = currentMatch.getSecondPlayerScores();
 
         int points = currentPlayerScore.getPoints();
         int opponentPoints = opponentPlayerScore.getPoints();
@@ -70,10 +71,9 @@ public class MatchScoreService {
 
     }
 
-    public CurrentMatchViewDto getCurrentMatchView(String uuid) {
+    public CurrentMatchViewDto getMatchView(String uuid) {
         UUID matchId = UUID.fromString(uuid);
-        CurrentMatchStorage matchStorage = getCurrentMatchStorage();
-        CurrentMatch currentMatch = matchStorage.getMap().get(matchId);
+        CurrentMatch currentMatch = currentMatchStorage.getMap().get(matchId);
 
         Long firstPlayerId = currentMatch.getFirstPlayerId();
         Long secondPlayerId = currentMatch.getSecondPlayerId();
@@ -81,16 +81,20 @@ public class MatchScoreService {
         Player firstPlayer = playerDao.findByID(firstPlayerId);
         Player secondPlayer = playerDao.findByID(secondPlayerId);
 
-        Scores firstPlayerScores = currentMatch.getFirstPlayerScores();
-        Scores secondPlayerScores = currentMatch.getSecondPlayerScores();
+        Score firstPlayerScores = currentMatch.getFirstPlayerScores();
+        Score secondPlayerScores = currentMatch.getSecondPlayerScores();
 
-        return new CurrentMatchViewDto(matchId,
-                firstPlayer.getName(),
-                secondPlayer.getName(),
+        PlayerViewDto firstPlayerDto = new PlayerViewDto(firstPlayerId, firstPlayer);
+        PlayerViewDto secondPlayerDto = new PlayerViewDto(secondPlayerId, secondPlayer);
+        return new CurrentMatchViewDto(
+                firstPlayerDto,
+                secondPlayerDto,
                 firstPlayerScores,
                 secondPlayerScores
         );
     }
+
+
 
 
 }

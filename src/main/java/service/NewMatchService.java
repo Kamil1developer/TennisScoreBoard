@@ -4,7 +4,7 @@ import dao.PlayerDao;
 import dto.NewMatchRequestDto;
 import entity.Player;
 import matches.CurrentMatch;
-import scores.Scores;
+import scores.Score;
 import storages.CurrentMatchStorage;
 import validator.NewMatchValidator;
 
@@ -52,8 +52,8 @@ public class NewMatchService {
         CurrentMatch currentMatch = new CurrentMatch(
                 firstPlayer.getId(),
                 secondPlayer.getId(),
-                new Scores(0, 0, 0,false),
-                new Scores(0, 0, 0,false)
+                new Score(0, 0, 0,false),
+                new Score(0, 0, 0,false)
         );
 
         UUID uuid = UUID.randomUUID();

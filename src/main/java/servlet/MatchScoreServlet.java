@@ -22,24 +22,28 @@ public class MatchScoreServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String uuid = req.getParameter("uuid");
-        CurrentMatchViewDto matchViewDto = matchScoreService.getCurrentMatchView(uuid);
-        renderView(req,resp, matchViewDto, uuid);
+
+        CurrentMatchViewDto matchViewDto = matchScoreService.getMatchView(uuid);
+
+        req.setAttribute("uuid", uuid);
+
+        renderView(req,resp, matchViewDto);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         String uuid = req.getParameter("uuid");
+
         String playerId = req.getParameter("playerId");
 
         matchScoreService.addScore(uuid, playerId);
-        CurrentMatchViewDto matchViewDto = matchScoreService.getCurrentMatchView(uuid);
+        CurrentMatchViewDto matchViewDto = matchScoreService.getMatchView(uuid);
 
-        renderView(req,resp, matchViewDto,uuid);
+        renderView(req,resp, matchViewDto);
 
     }
-    private void renderView(HttpServletRequest req,HttpServletResponse resp, CurrentMatchViewDto matchViewDto, String uuid) throws ServletException, IOException {
+    private void renderView(HttpServletRequest req,HttpServletResponse resp, CurrentMatchViewDto matchViewDto) throws ServletException, IOException {
         req.setAttribute("currentMatchView", matchViewDto);
-        req.setAttribute("uuid", uuid);
 
         req.getRequestDispatcher("/match-score.jsp").forward(req,resp);
     }

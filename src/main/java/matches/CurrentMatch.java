@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import scores.Scores;
+import scores.Score;
 
 @AllArgsConstructor
 @Getter
@@ -13,6 +13,6 @@ import scores.Scores;
 public class CurrentMatch{
     private final Long firstPlayerId;
     private final Long secondPlayerId;
-    private final Scores firstPlayerScores;
-    private final Scores secondPlayerScores;
+    private final Score firstPlayerScores;
+    private final Score secondPlayerScores;
 }

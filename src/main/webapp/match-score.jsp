@@ -46,10 +46,10 @@
                 </thead>
                 <tbody>
                 <tr class="player1">
-                    <td class="table-text">${currentMatchView.firstPlayerName}</td>
-                    <td class="table-text">${currentMatchView.firstPlayerScores.sets}</td>
-                    <td class="table-text">${currentMatchView.firstPlayerScores.games}</td>
-                    <td class="table-text">${currentMatchView.firstPlayerScores.points}</td>
+                    <td class="table-text">${matchView.firstPlayerName}</td>
+                    <td class="table-text">${matchView.firstPlayerScore.sets}</td>
+                    <td class="table-text">${matchView.firstPlayerScore.games}</td>
+                    <td class="table-text">${matchView.firstPlayerScore.points}</td>
                     <td class="table-text">
                         <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${uuid}">
                             <input type="hidden" name="playerId" value="${currentMatch.firstPlayerId}">
@@ -58,10 +58,10 @@
                     </td>
                 </tr>
                 <tr class="player2">
-                    <td class="table-text">${currentMatchView.secondPlayerName}</td>
-                    <td class="table-text">${currentMatchView.secondPlayerScores.sets}</td>
-                    <td class="table-text">${currentMatchView.secondPlayerScores.games}</td>
-                    <td class="table-text">${currentMatchView.secondPlayerScores.points}</td>
+                    <td class="table-text">${matchView.secondPlayerName}</td>
+                    <td class="table-text">${matchView.secondPlayerScore.sets}</td>
+                    <td class="table-text">${matchView.secondPlayerScore.games}</td>
+                    <td class="table-text">${currentMatchView.secondPlayerScore.points}</td>
                     <td class="table-text">
                        <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${uuid}">
                            <input type="hidden" name="playerId" value="${currentMatch.secondPlayerId}">

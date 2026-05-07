@@ -18,6 +18,6 @@ public class CurrentMatchStorage {
     }
 
     public Map<UUID, CurrentMatch> getMap() {
-        return currentMatchesMap;
+        return Map.copyOf(currentMatchesMap);
     }
 }

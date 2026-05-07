@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Scores{
+public class Score{
     private int sets = 0;
     private int games = 0;
     private int points = 0;

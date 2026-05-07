@@ -31,17 +31,21 @@ public class MatchScoreService {
 
 
         if (firstPlayerId == Long.parseLong(playerId)) {
-            addPoints(currentMatch);
+            Score currentPlayerScore = currentMatch.getFirstPlayerScore();
+            Score opponentPlayerScore = currentMatch.getSecondPlayerScore();
+
+            addPoints(currentMatch, currentPlayerScore, opponentPlayerScore);
         }
 
         if (secondPlayerId == Long.parseLong(playerId)) {
-            addPoints(currentMatch);
+            Score currentPlayerScore = currentMatch.getSecondPlayerScore();
+            Score opponentPlayerScore = currentMatch.getFirstPlayerScore();
+
+            addPoints(currentMatch, currentPlayerScore, opponentPlayerScore);
         }
     }
 
-    private void addPoints(CurrentMatch currentMatch){
-        Score currentPlayerScore = currentMatch.getFirstPlayerScore();
-        Score opponentPlayerScore = currentMatch.getSecondPlayerScore();
+    private void addPoints(CurrentMatch currentMatch, Score currentPlayerScore, Score opponentPlayerScore){
 
         int points = currentPlayerScore.getPoints();
         int opponentPoints = opponentPlayerScore.getPoints();
@@ -51,7 +55,7 @@ public class MatchScoreService {
         if (points < 15){
             currentPlayerScore.setPoints(15);
         }
-        else if (points != 15 && points < 30){
+        else if (points == 15){
             currentPlayerScore.setPoints(30);
         }
         else if (points == 40 && opponentPoints < 40){

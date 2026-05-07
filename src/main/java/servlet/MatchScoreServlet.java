@@ -25,8 +25,6 @@ public class MatchScoreServlet extends HttpServlet {
 
         CurrentMatchViewDto matchViewDto = matchScoreService.getMatchView(uuid);
 
-        req.setAttribute("uuid", uuid);
-
         renderView(req,resp, matchViewDto);
     }
 
@@ -42,9 +40,10 @@ public class MatchScoreServlet extends HttpServlet {
         renderView(req,resp, matchViewDto);
 
     }
-    private void renderView(HttpServletRequest req,HttpServletResponse resp, CurrentMatchViewDto matchViewDto) throws ServletException, IOException {
+    private void renderView(HttpServletRequest req,
+                            HttpServletResponse resp,
+                            CurrentMatchViewDto matchViewDto) throws ServletException, IOException {
         req.setAttribute("currentMatchView", matchViewDto);
-
         req.getRequestDispatcher("/match-score.jsp").forward(req,resp);
     }
 

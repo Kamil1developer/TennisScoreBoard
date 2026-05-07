@@ -86,7 +86,7 @@ public class MatchScoreService {
 
         PlayerViewDto firstPlayerDto = new PlayerViewDto(firstPlayerId, firstPlayer.getName());
         PlayerViewDto secondPlayerDto = new PlayerViewDto(secondPlayerId, secondPlayer.getName());
-        return new CurrentMatchViewDto(
+        return new CurrentMatchViewDto(matchId,
                 firstPlayerDto,
                 secondPlayerDto,
                 firstPlayerScore,

@@ -10,6 +10,6 @@ import lombok.Getter;
 public class CurrentMatchViewDto {
     private final PlayerViewDto firstPlayerDto;
     private final PlayerViewDto secondPlayerDto;
-    private final Score firstPlayerScores;
-    private final Score secondPlayerScores;
+    private final Score firstPlayerScore;
+    private final Score secondPlayerScore;
 }

@@ -46,7 +46,7 @@
                 </thead>
                 <tbody>
                 <tr class="player1">
-                    <td class="table-text">${currentMatchView.firstPlayerDto.firstPlayerName}</td>
+                    <td class="table-text">${currentMatchView.firstPlayerDto.player.firstPlayerName}</td>
                     <td class="table-text">${currentMatchView.firstPlayerScore.sets}</td>
                     <td class="table-text">${currentMatchView.firstPlayerScore.games}</td>
                     <td class="table-text">${currentMatchView.firstPlayerScore.points}</td>
@@ -58,7 +58,7 @@
                     </td>
                 </tr>
                 <tr class="player2">
-                    <td class="table-text">${currentMatchView.secondPlayerDto.secondPlayerName}</td>
+                    <td class="table-text">${currentMatchView.secondPlayerDto.player.secondPlayerName}</td>
                     <td class="table-text">${currentMatchView.secondPlayerScore.sets}</td>
                     <td class="table-text">${currentMatchView.secondPlayerScore.games}</td>
                     <td class="table-text">${currentMatchView.secondPlayerScore.points}</td>

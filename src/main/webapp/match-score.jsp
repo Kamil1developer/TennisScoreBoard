@@ -52,7 +52,7 @@
                     <td class="table-text">${currentMatchView.firstPlayerScore.points}</td>
                     <td class="table-text">
                         <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${uuid}">
-                            <input type="hidden" name="playerId" value="${currentMatch.firstPlayerDto.firstPlayerId}">
+                            <input type="hidden" name="playerId" value="${currentMatch.firstPlayerDto.id}">
                             <button type="submit" class="score-btn">Score</button>
                         </form>
                     </td>
@@ -64,7 +64,7 @@
                     <td class="table-text">${currentMatchView.secondPlayerScore.points}</td>
                     <td class="table-text">
                        <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${uuid}">
-                           <input type="hidden" name="playerId" value="${currentMatchView.secondPlayerDto.secondPlayerId}">
+                           <input type="hidden" name="playerId" value="${currentMatchView.secondPlayerDto.id}">
                            <button type="submit" class="score-btn">Score</button>
                        </form>
                    </td>

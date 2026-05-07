@@ -84,8 +84,8 @@ public class MatchScoreService {
         Score firstPlayerScore = currentMatch.getFirstPlayerScore();
         Score secondPlayerScore = currentMatch.getSecondPlayerScore();
 
-        PlayerViewDto firstPlayerDto = new PlayerViewDto(firstPlayerId, firstPlayer);
-        PlayerViewDto secondPlayerDto = new PlayerViewDto(secondPlayerId, secondPlayer);
+        PlayerViewDto firstPlayerDto = new PlayerViewDto(firstPlayerId, firstPlayer.getName());
+        PlayerViewDto secondPlayerDto = new PlayerViewDto(secondPlayerId, secondPlayer.getName());
         return new CurrentMatchViewDto(
                 firstPlayerDto,
                 secondPlayerDto,

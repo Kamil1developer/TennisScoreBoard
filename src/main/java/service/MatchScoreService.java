@@ -34,18 +34,18 @@ public class MatchScoreService {
             Score currentPlayerScore = currentMatch.getFirstPlayerScore();
             Score opponentPlayerScore = currentMatch.getSecondPlayerScore();
 
-            addPoints(currentMatch, currentPlayerScore, opponentPlayerScore);
+            addPoints(currentPlayerScore, opponentPlayerScore);
         }
 
         if (secondPlayerId == Long.parseLong(playerId)) {
             Score currentPlayerScore = currentMatch.getSecondPlayerScore();
             Score opponentPlayerScore = currentMatch.getFirstPlayerScore();
 
-            addPoints(currentMatch, currentPlayerScore, opponentPlayerScore);
+            addPoints(currentPlayerScore, opponentPlayerScore);
         }
     }
 
-    private void addPoints(CurrentMatch currentMatch, Score currentPlayerScore, Score opponentPlayerScore){
+    private void addPoints(Score currentPlayerScore, Score opponentPlayerScore){
 
         int points = currentPlayerScore.getPoints();
         int opponentPoints = opponentPlayerScore.getPoints();

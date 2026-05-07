@@ -58,6 +58,9 @@ public class MatchScoreService {
         else if (points == 15){
             currentPlayerScore.setPoints(30);
         }
+        else if (points == 30){
+            currentPlayerScore.setPoints(40);
+        }
         else if (points == 40 && opponentPoints < 40){
             currentPlayerScore.setPoints(0);
             currentPlayerScore.addGames(1);

@@ -65,9 +65,6 @@ public class MatchScoreService {
             currentPlayerScore.setPoints(0);
             currentPlayerScore.addGames(1);
         }
-        else if (points == 40 && opponentPoints == 40){
-            currentPlayerScore.setAd(true);
-        }
         else if (advantage && opponentPoints == 40){
             currentPlayerScore.addGames(1);
         }
@@ -75,7 +72,9 @@ public class MatchScoreService {
             currentPlayerScore.setAd(false);
             opponentPlayerScore.setAd(false);
         }
-
+        else if (points == 40 && opponentPoints == 40){
+            currentPlayerScore.setAd(true);
+        }
     }
 
     public CurrentMatchViewDto getMatchView(String uuid) {

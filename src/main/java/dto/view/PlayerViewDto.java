@@ -10,5 +10,5 @@ import lombok.Setter;
 
 public class PlayerViewDto {
     private final Long id;
-    private final Player player;
+    private final String name;
 }

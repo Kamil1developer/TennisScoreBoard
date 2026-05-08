@@ -52,8 +52,8 @@ public class NewMatchService {
         CurrentMatch currentMatch = new CurrentMatch(
                 firstPlayer.getId(),
                 secondPlayer.getId(),
-                new Score(0, 0, "0",false),
-                new Score(0, 0, "0",false)
+                new Score(0, 0, "0"),
+                new Score(0, 0, "0")
         );
 
         UUID uuid = UUID.randomUUID();

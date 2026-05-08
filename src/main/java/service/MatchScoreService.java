@@ -64,7 +64,8 @@ public class MatchScoreService {
             currentPlayerScore.addGames(1);
         }
         else if (points.equals("40") && opponentPoints.equals("AD")){
-            currentPlayerScore.setPoints("AD");
+            currentPlayerScore.setPoints("40");
+            opponentPlayerScore.setPoints("40");
         }
         else if (points.equals("40") && opponentPoints.equals("40")){
             currentPlayerScore.setPoints("AD");

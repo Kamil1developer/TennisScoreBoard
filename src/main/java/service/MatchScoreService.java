@@ -48,8 +48,6 @@ public class MatchScoreService {
     private void addPoints(Score currentPlayerScore, Score opponentPlayerScore){
         String points = currentPlayerScore.getPoints();
         String opponentPoints = opponentPlayerScore.getPoints();
-        boolean advantage = currentPlayerScore.isAd();
-        boolean opponentAdvantage = opponentPlayerScore.isAd();
 
         if (points.equals("0")){
             currentPlayerScore.setPoints("15");
@@ -64,27 +62,18 @@ public class MatchScoreService {
             currentPlayerScore.setPoints("0");
             currentPlayerScore.addGames(1);
         }
-        else if (points.equals("40") && opponentAdvantage){
+        else if (points.equals("40") && opponentPoints.equals("AD")){
             currentPlayerScore.setPoints("AD");
-            currentPlayerScore.setAd(false);
-            opponentPlayerScore.setAd(false);
-        }
-        else if (advantage && opponentPoints.equals("40")){
-            currentPlayerScore.addGames(1);
-            opponentPlayerScore.setPoints("0");
-        }
-        else if (advantage && opponentAdvantage){
-            currentPlayerScore.setPoints("0");
-            currentPlayerScore.setPoints("0");
-            currentPlayerScore.setAd(false);
-            opponentPlayerScore.setAd(false);
         }
         else if (points.equals("40") && opponentPoints.equals("40")){
-            currentPlayerScore.setAd(true);
             currentPlayerScore.setPoints("AD");
         }
+        else if (points.equals("AD") && opponentPoints.equals("40")){
+            currentPlayerScore.addGames(1);
+            currentPlayerScore.setPoints("0");
+            opponentPlayerScore.setPoints("0");
+        }
         else if (points.equals("AD") && opponentPoints.equals("AD")){
-            currentPlayerScore.setAd(true);
             currentPlayerScore.setPoints("40");
             opponentPlayerScore.setPoints("40");
         }

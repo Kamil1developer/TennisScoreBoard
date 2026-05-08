@@ -65,8 +65,7 @@ public class MatchScoreService {
             currentPlayerScore.addGames(1);
         }
         else if (points.equals("40") && opponentAdvantage){
-            currentPlayerScore.setPoints("40");
-            currentPlayerScore.setPoints("40");
+            currentPlayerScore.setPoints("AD");
             currentPlayerScore.setAd(false);
             opponentPlayerScore.setAd(false);
         }
@@ -83,6 +82,11 @@ public class MatchScoreService {
         else if (points.equals("40") && opponentPoints.equals("40")){
             currentPlayerScore.setAd(true);
             currentPlayerScore.setPoints("AD");
+        }
+        else if (points.equals("AD") && opponentPoints.equals("AD")){
+            currentPlayerScore.setAd(true);
+            currentPlayerScore.setPoints("40");
+            opponentPlayerScore.setPoints("40");
         }
     }
 

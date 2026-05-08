@@ -60,6 +60,7 @@ public class MatchScoreService {
         }
         else if (points.equals("40") && (!opponentPoints.equals("40") && !opponentPoints.equals("AD"))){
             currentPlayerScore.setPoints("0");
+            opponentPlayerScore.setPoints("0");
             currentPlayerScore.addGames(1);
         }
         else if (points.equals("40") && opponentPoints.equals("AD")){

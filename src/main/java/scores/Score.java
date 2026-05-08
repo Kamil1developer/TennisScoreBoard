@@ -15,4 +15,7 @@ public class Score{
     public void addGames(int games) {
         this.games += games;
     }
+    public void addSets(int sets) {
+        this.sets += sets;
+    }
 }

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -44,31 +45,39 @@
                     <th class="table-text">Points</th>
                 </tr>
                 </thead>
+
                 <tbody>
-                <tr class="player1">
-                    <td class="table-text">${currentMatchView.firstPlayerDto.name}</td>
-                    <td class="table-text">${currentMatchView.firstPlayerScore.sets}</td>
-                    <td class="table-text">${currentMatchView.firstPlayerScore.games}</td>
-                    <td class="table-text">${currentMatchView.firstPlayerScore.points}</td>
-                    <td class="table-text">
-                        <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${currentMatchView.uuid}">
-                            <input type="hidden" name="playerId" value="${currentMatchView.firstPlayerDto.id}">
-                            <button type="submit" class="score-btn">Score</button>
-                        </form>
-                    </td>
-                </tr>
-                <tr class="player2">
-                    <td class="table-text">${currentMatchView.secondPlayerDto.name}</td>
-                    <td class="table-text">${currentMatchView.secondPlayerScore.sets}</td>
-                    <td class="table-text">${currentMatchView.secondPlayerScore.games}</td>
-                    <td class="table-text">${currentMatchView.secondPlayerScore.points}</td>
-                    <td class="table-text">
-                       <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${currentMatchView.uuid}">
-                           <input type="hidden" name="playerId" value="${currentMatchView.secondPlayerDto.id}">
-                           <button type="submit" class="score-btn">Score</button>
-                       </form>
-                   </td>
-                </tr>
+                <c:choose>
+                    <c:when test="${matchInProgress}">
+                        <tr class="player1">
+                            <td class="table-text">${currentMatchView.firstPlayerDto.name}</td>
+                            <td class="table-text">${currentMatchView.firstPlayerScore.sets}</td>
+                            <td class="table-text">${currentMatchView.firstPlayerScore.games}</td>
+                            <td class="table-text">${currentMatchView.firstPlayerScore.points}</td>
+                            <td class="table-text">
+                                <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${currentMatchView.uuid}">
+                                    <input type="hidden" name="playerId" value="${currentMatchView.firstPlayerDto.id}">
+                                    <button type="submit" class="score-btn">Score</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr class="player2">
+                            <td class="table-text">${currentMatchView.secondPlayerDto.name}</td>
+                            <td class="table-text">${currentMatchView.secondPlayerScore.sets}</td>
+                            <td class="table-text">${currentMatchView.secondPlayerScore.games}</td>
+                            <td class="table-text">${currentMatchView.secondPlayerScore.points}</td>
+                            <td class="table-text">
+                               <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${currentMatchView.uuid}">
+                                   <input type="hidden" name="playerId" value="${currentMatchView.secondPlayerDto.id}">
+                                   <button type="submit" class="score-btn">Score</button>
+                               </form>
+                           </td>
+                        </tr>
+                    </c:when>
+
+                    <c:when test="${!matchStart}">
+                    </c:when>
+                </c:choose>
                 </tbody>
             </table>
         </section>

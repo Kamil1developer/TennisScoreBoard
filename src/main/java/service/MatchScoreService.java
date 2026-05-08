@@ -34,14 +34,14 @@ public class MatchScoreService {
             Score currentPlayerScore = currentMatch.getFirstPlayerScore();
             Score opponentPlayerScore = currentMatch.getSecondPlayerScore();
 
-            addPoints(currentPlayerScore, opponentPlayerScore);
+            checkCountGames(currentPlayerScore, opponentPlayerScore);
         }
 
         if (secondPlayerId == Long.parseLong(playerId)) {
             Score currentPlayerScore = currentMatch.getSecondPlayerScore();
             Score opponentPlayerScore = currentMatch.getFirstPlayerScore();
 
-            addPoints(currentPlayerScore, opponentPlayerScore);
+            checkCountGames(currentPlayerScore, opponentPlayerScore);
         }
     }
 
@@ -80,6 +80,26 @@ public class MatchScoreService {
             opponentPlayerScore.setPoints("40");
         }
     }
+    private void checkCountGames(Score currentPlayerScore, Score opponentPlayerScore){
+
+        addPoints(currentPlayerScore, opponentPlayerScore);
+        if (isSetWon(currentPlayerScore, opponentPlayerScore)){
+            currentPlayerScore.addSets(1);
+        }
+
+        checkCountSets(currentPlayerScore, opponentPlayerScore);
+
+    }
+    private boolean isSetWon(Score currentPlayerScore, Score opponentPlayerScore){
+        return (currentPlayerScore.getGames() == 6 && opponentPlayerScore.getGames() < 5 ||
+                currentPlayerScore.getGames() == 7 && opponentPlayerScore.getGames() == 5);
+    }
+
+    public void checkCountSets(Score currentPlayerScore, Score opponentPlayerScore){
+        if (currentPlayerScore.getSets() == 2 || opponentPlayerScore.getSets() == 2){
+
+        }
+    }
 
     public CurrentMatchViewDto getMatchView(String uuid) {
         UUID matchId = UUID.fromString(uuid);
@@ -96,7 +116,8 @@ public class MatchScoreService {
 
         PlayerViewDto firstPlayerDto = new PlayerViewDto(firstPlayerId, firstPlayer.getName());
         PlayerViewDto secondPlayerDto = new PlayerViewDto(secondPlayerId, secondPlayer.getName());
-        return new CurrentMatchViewDto(matchId,
+        return new CurrentMatchViewDto(
+                matchId,
                 firstPlayerDto,
                 secondPlayerDto,
                 firstPlayerScore,

@@ -25,6 +25,7 @@ public class MatchScoreServlet extends HttpServlet {
 
         CurrentMatchViewDto matchViewDto = matchScoreService.getMatchView(uuid);
 
+        req.setAttribute("matchInProgress", true);
         renderView(req,resp, matchViewDto);
     }
 
@@ -35,15 +36,22 @@ public class MatchScoreServlet extends HttpServlet {
         String playerId = req.getParameter("playerId");
 
         matchScoreService.addScore(uuid, playerId);
-        CurrentMatchViewDto matchViewDto = matchScoreService.getMatchView(uuid);
 
-        renderView(req,resp, matchViewDto);
+        if (!matchScoreService.hasMatchWinner(uuid)) {
+            CurrentMatchViewDto matchViewDto = matchScoreService.getMatchView(uuid);
+
+            renderView(req, resp, matchViewDto);
+        }
+        else {
+            req.setAttribute("matchInProgress", false);
+            req.setAttribute("matchOver", true);
+            req.getRequestDispatcher("/match-score.jsp").forward(req,resp);
+        }
 
     }
     private void renderView(HttpServletRequest req,
                             HttpServletResponse resp,
                             CurrentMatchViewDto matchViewDto) throws ServletException, IOException {
-        req.setAttribute("matchInProgress", true);
         req.setAttribute("currentMatchView", matchViewDto);
         req.getRequestDispatcher("/match-score.jsp").forward(req,resp);
     }

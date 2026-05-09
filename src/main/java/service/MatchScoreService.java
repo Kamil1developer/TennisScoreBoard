@@ -4,7 +4,6 @@ import dao.PlayerDao;
 import dto.view.CurrentMatchViewDto;
 import dto.view.PlayerViewDto;
 import entity.Player;
-import lombok.Getter;
 import matches.CurrentMatch;
 import scores.Score;
 import storages.CurrentMatchStorage;
@@ -12,7 +11,6 @@ import storages.CurrentMatchStorage;
 import java.util.UUID;
 
 public class MatchScoreService {
-    @Getter
     private final CurrentMatchStorage currentMatchStorage;
     private final PlayerDao playerDao;
 
@@ -81,13 +79,11 @@ public class MatchScoreService {
         }
     }
     private void checkCountGames(Score currentPlayerScore, Score opponentPlayerScore){
-
         addPoints(currentPlayerScore, opponentPlayerScore);
+
         if (isSetWon(currentPlayerScore, opponentPlayerScore)){
             currentPlayerScore.addSets(1);
         }
-
-        checkCountSets(currentPlayerScore, opponentPlayerScore);
 
     }
     private boolean isSetWon(Score currentPlayerScore, Score opponentPlayerScore){
@@ -95,10 +91,14 @@ public class MatchScoreService {
                 currentPlayerScore.getGames() == 7 && opponentPlayerScore.getGames() == 5);
     }
 
-    public void checkCountSets(Score currentPlayerScore, Score opponentPlayerScore){
-        if (currentPlayerScore.getSets() == 2 || opponentPlayerScore.getSets() == 2){
+    public boolean hasMatchWinner(String uuid){
+        UUID matchId = UUID.fromString(uuid);
 
-        }
+        CurrentMatch currentMatch = currentMatchStorage.getMap().get(matchId);
+        Score currentPlayerScore = currentMatch.getFirstPlayerScore();
+        Score opponentPlayerScore = currentMatch.getSecondPlayerScore();
+
+        return  (currentPlayerScore.getSets() == 2 || opponentPlayerScore.getSets() == 2);
     }
 
     public CurrentMatchViewDto getMatchView(String uuid) {

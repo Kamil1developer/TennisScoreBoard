@@ -77,9 +77,9 @@
 
                     <c:when test="${matchOver}">
                         <tr class="matchOver">
-                            <td class="table-text">${matchOver.name}
-                            <td class="table-text">${matchOver.sets}
-                            </td>
+                            <td class="table-text">${matchOverView.name}</td>
+                            <td class="table-text">${matchOverView.sets}</td>
+
                         </tr>
                     </c:when>
                 </c:choose>

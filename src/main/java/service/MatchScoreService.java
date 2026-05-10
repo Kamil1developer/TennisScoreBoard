@@ -82,6 +82,8 @@ public class MatchScoreService {
         addPoints(currentPlayerScore, opponentPlayerScore);
 
         if (isSetWon(currentPlayerScore, opponentPlayerScore)){
+            currentPlayerScore.setGames(0);
+            opponentPlayerScore.setGames(0);
             currentPlayerScore.addSets(1);
         }
 

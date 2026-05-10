@@ -37,18 +37,18 @@
         <div class="current-match-image"></div>
         <section class="score">
             <table class="table">
-                <thead class="result">
-                <tr>
-                    <th class="table-text">Player</th>
-                    <th class="table-text">Sets</th>
-                    <th class="table-text">Games</th>
-                    <th class="table-text">Points</th>
-                </tr>
-                </thead>
 
                 <tbody>
                 <c:choose>
                     <c:when test="${matchInProgress}">
+                        <thead class="result">
+                        <tr>
+                            <th class="table-text">Player</th>
+                            <th class="table-text">Sets</th>
+                            <th class="table-text">Games</th>
+                            <th class="table-text">Points</th>
+                        </tr>
+                        </thead>
                         <tr class="player1">
                             <td class="table-text">${currentMatchView.firstPlayerDto.name}</td>
                             <td class="table-text">${currentMatchView.firstPlayerScore.sets}</td>
@@ -76,6 +76,12 @@
                     </c:when>
 
                     <c:when test="${matchOver}">
+                        <thead class="result">
+                        <tr>
+                            <th class="table-text">Player</th>
+                            <th class="table-text">Sets</th>
+                        </tr>
+                        </thead>
                         <tr class="matchOver">
                             <td class="table-text">${matchOverView.name}</td>
                             <td class="table-text">${matchOverView.sets}</td>

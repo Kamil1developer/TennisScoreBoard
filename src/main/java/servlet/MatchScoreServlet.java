@@ -25,7 +25,6 @@ public class MatchScoreServlet extends HttpServlet {
 
         CurrentMatchViewDto matchViewDto = matchScoreService.getMatchView(uuid);
 
-        req.setAttribute("matchInProgress", true);
         renderView(req,resp, matchViewDto);
     }
 
@@ -52,6 +51,7 @@ public class MatchScoreServlet extends HttpServlet {
     private void renderView(HttpServletRequest req,
                             HttpServletResponse resp,
                             CurrentMatchViewDto matchViewDto) throws ServletException, IOException {
+        req.setAttribute("matchInProgress", true);
         req.setAttribute("currentMatchView", matchViewDto);
         req.getRequestDispatcher("/match-score.jsp").forward(req,resp);
     }

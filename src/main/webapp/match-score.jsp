@@ -83,9 +83,12 @@
                         </tr>
                         </thead>
                         <tr class="matchOver">
-                            <td class="table-text">${matchOverView.name}</td>
-                            <td class="table-text">${matchOverView.sets}</td>
-
+                            <td class="table-text">${matchOverView.winnerName}</td>
+                            <td class="table-text">${matchOverView.winnerSets}</td>
+                        </tr>
+                        <tr class="matchOver">
+                            <td class="table-text">${matchOverView.loserName}</td>
+                            <td class="table-text">${matchOverView.loserSets}</td>
                         </tr>
                     </c:when>
                 </c:choose>

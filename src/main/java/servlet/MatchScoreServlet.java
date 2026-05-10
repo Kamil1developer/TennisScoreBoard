@@ -2,6 +2,7 @@ package servlet;
 
 import bootstrap.AppContainer;
 import dto.view.CurrentMatchViewDto;
+import dto.view.MatchOverViewDto;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import service.MatchScoreService;
 import storages.CurrentMatchStorage;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 @WebServlet("/match-score")
@@ -42,9 +44,14 @@ public class MatchScoreServlet extends HttpServlet {
             renderView(req, resp, matchViewDto);
         }
         else {
-            req.setAttribute("matchInProgress", false);
-            req.setAttribute("matchOver", true);
-            req.getRequestDispatcher("/match-score.jsp").forward(req,resp);
+            Optional<MatchOverViewDto> optional = matchScoreService.getMatchOverView(uuid);
+            if (optional.isPresent()) {
+                MatchOverViewDto matchOverViewDto = optional.get();
+                req.setAttribute("matchInProgress", false);
+                req.setAttribute("matchOver", true);
+                req.setAttribute("matchOverView", matchOverViewDto);
+                req.getRequestDispatcher("/match-score.jsp").forward(req, resp);
+            }
         }
 
     }

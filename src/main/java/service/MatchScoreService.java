@@ -2,12 +2,14 @@ package service;
 
 import dao.PlayerDao;
 import dto.view.CurrentMatchViewDto;
+import dto.view.MatchOverViewDto;
 import dto.view.PlayerViewDto;
 import entity.Player;
 import matches.CurrentMatch;
 import scores.Score;
 import storages.CurrentMatchStorage;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class MatchScoreService {
@@ -125,6 +127,40 @@ public class MatchScoreService {
                 firstPlayerScore,
                 secondPlayerScore
         );
+    }
+
+    public Optional<MatchOverViewDto> getMatchOverView(String uuid){
+        UUID matchId = UUID.fromString(uuid);
+        CurrentMatch currentMatch = currentMatchStorage.getMap().get(matchId);
+
+        Long firstPlayerId = currentMatch.getFirstPlayerId();
+        Long secondPlayerId = currentMatch.getSecondPlayerId();
+
+        Player firstPlayer = playerDao.findByID(firstPlayerId);
+        Player secondPlayer = playerDao.findByID(secondPlayerId);
+
+        int firstPlayerSets = currentMatch.getFirstPlayerScore().getSets();
+        int secondPlayerSets = currentMatch.getSecondPlayerScore().getSets();
+
+
+        if (firstPlayerSets > secondPlayerSets){
+            String winnerName = firstPlayer.getName();
+            int winnerSets = currentMatch.getFirstPlayerScore().getSets();
+            String loserName = secondPlayer.getName();
+            int loserSets = currentMatch.getSecondPlayerScore().getSets();
+
+            return Optional.of(new MatchOverViewDto(winnerName,winnerSets,loserName,loserSets));
+        }
+        if (firstPlayerSets < secondPlayerSets){
+            String winnerName = secondPlayer.getName();
+            int winnerSets = currentMatch.getSecondPlayerScore().getSets();
+            String loserName = firstPlayer.getName();
+            int loserSets = currentMatch.getFirstPlayerScore().getSets();
+
+            return Optional.of(new MatchOverViewDto(winnerName,winnerSets,loserName,loserSets));
+        }
+
+        return Optional.empty();
     }
 
 

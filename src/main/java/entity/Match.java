@@ -14,13 +14,22 @@ public class Match {
 
     @ManyToOne
     @JoinColumn(name = "Player1")
-    private Player firstPlayerName;
+    private Long firstPlayerId;
 
     @ManyToOne
     @JoinColumn(name = "Player2")
-    private Player secondPlayerName;
+    private Long secondPlayerId;
 
     @ManyToOne
     @JoinColumn(name = "Winner")
-    private Player winner;
+    private Long winnerId;
+
+    protected Match(){}
+    public Match(Long firstPlayerId, Long secondPlayerId, Long winnerId){
+        this.firstPlayerId = firstPlayerId;
+        this.secondPlayerId = secondPlayerId;
+        this.winnerId = winnerId;
+    }
+
+
 }

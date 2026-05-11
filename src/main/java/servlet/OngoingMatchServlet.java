@@ -3,29 +3,25 @@ package servlet;
 import bootstrap.AppContainer;
 import dto.view.CurrentMatchViewDto;
 import dto.view.MatchOverViewDto;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import matches.CurrentMatch;
-import service.MatchScoreService;
-import storages.CurrentMatchStorage;
+import service.OngoingMatchService;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.UUID;
 
 @WebServlet("/match-score")
-public class MatchScoreServlet extends HttpServlet {
-    private MatchScoreService matchScoreService;
+public class OngoingMatchServlet extends HttpServlet {
+    private OngoingMatchService ongoingMatchService;
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String uuid = req.getParameter("uuid");
 
-        CurrentMatchViewDto matchViewDto = matchScoreService.getMatchView(uuid);
+        CurrentMatchViewDto matchViewDto = ongoingMatchService.getMatchView(uuid);
 
         renderView(req,resp, matchViewDto);
     }
@@ -36,15 +32,15 @@ public class MatchScoreServlet extends HttpServlet {
 
         String playerId = req.getParameter("playerId");
 
-        matchScoreService.addScore(uuid, playerId);
+        ongoingMatchService.addScore(uuid, playerId);
 
-        if (!matchScoreService.hasMatchWinner(uuid)) {
-            CurrentMatchViewDto matchViewDto = matchScoreService.getMatchView(uuid);
+        if (!ongoingMatchService.hasMatchWinner(uuid)) {
+            CurrentMatchViewDto matchViewDto = ongoingMatchService.getMatchView(uuid);
 
             renderView(req, resp, matchViewDto);
         }
         else {
-            Optional<MatchOverViewDto> optional = matchScoreService.getMatchOverView(uuid);
+            Optional<MatchOverViewDto> optional = ongoingMatchService.getMatchOverView(uuid);
             if (optional.isPresent()) {
                 MatchOverViewDto matchOverViewDto = optional.get();
                 req.setAttribute("matchInProgress", false);
@@ -66,6 +62,6 @@ public class MatchScoreServlet extends HttpServlet {
 
     public void init(){
         AppContainer appContainer = (AppContainer) getServletContext().getAttribute("appContainer");
-        matchScoreService = appContainer.services().getMatchScoreService();
+        ongoingMatchService = appContainer.services().getOngoingMatchService();
     }
 }

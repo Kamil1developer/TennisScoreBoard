@@ -2,19 +2,15 @@ package dao.impl;
 
 import dao.PlayerDao;
 import entity.Player;
+import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.util.List;
-
+@AllArgsConstructor
 public class HibernatePlayerDao implements PlayerDao {
     private final SessionFactory sessionFactory;
-
-    public HibernatePlayerDao(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
 
     public Player insert(Player player) {
         Transaction transaction = null;

@@ -5,6 +5,9 @@ import dto.view.CurrentMatchViewDto;
 import dto.view.MatchOverViewDto;
 import dto.view.PlayerViewDto;
 import entity.Player;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import matches.CurrentMatch;
 import scores.Score;
 import storages.CurrentMatchStorage;
@@ -12,37 +15,82 @@ import storages.CurrentMatchStorage;
 import java.util.Optional;
 import java.util.UUID;
 
-public class MatchScoreService {
+public class OngoingMatchService {
+    private final CompletedMatchService completedMatchService;
     private final CurrentMatchStorage currentMatchStorage;
     private final PlayerDao playerDao;
 
-    public MatchScoreService(PlayerDao playerDao, CurrentMatchStorage currentMatchStorage) {
+    public OngoingMatchService(PlayerDao playerDao, CurrentMatchStorage currentMatchStorage, CompletedMatchService completedMatchService) {
         this.currentMatchStorage = currentMatchStorage;
         this.playerDao = playerDao;
+        this.completedMatchService = completedMatchService;
     }
+    @Getter
+    private static class OngoingMatchContext{
+        private final UUID matchId;
+        private final CurrentMatch currentMatch;
 
-    public void addScore(String uuid, String playerId){
-        UUID matchId = UUID.fromString(uuid);
+        private final Long firstPlayerId;
+        private final Long secondPlayerId;
+
+        private final Player firstPlayer;
+        private final Player secondPlayer;
+
+        private final Score firstPlayerScore;
+        private final Score secondPlayerScore;
+
+        public OngoingMatchContext(CurrentMatch currentMatch, UUID matchId, Player firstPlayer, Player secondPlayer){
+            this.matchId = matchId;
+            this.currentMatch = currentMatch;
+
+            this.firstPlayerId = currentMatch.getFirstPlayerId();
+            this.secondPlayerId = currentMatch.getSecondPlayerId();
+
+            this.firstPlayer = firstPlayer;
+            this.secondPlayer = secondPlayer;
+
+            this.firstPlayerScore = currentMatch.getFirstPlayerScore();
+            this.secondPlayerScore = currentMatch.getSecondPlayerScore();
+        }
+
+    }
+    private OngoingMatchContext loadOngoingMatchContext(UUID matchId){
         CurrentMatch currentMatch = currentMatchStorage.getMap().get(matchId);
-
 
         Long firstPlayerId = currentMatch.getFirstPlayerId();
         Long secondPlayerId = currentMatch.getSecondPlayerId();
 
+        Player firstPlayer = playerDao.findByID(firstPlayerId);
+        Player secondPlayer = playerDao.findByID(secondPlayerId);
 
-        if (firstPlayerId == Long.parseLong(playerId)) {
-            Score currentPlayerScore = currentMatch.getFirstPlayerScore();
-            Score opponentPlayerScore = currentMatch.getSecondPlayerScore();
+        return new OngoingMatchContext(currentMatch, matchId, firstPlayer, secondPlayer);
+
+
+
+
+
+    }
+
+    public void addScore(String uuid, String playerId){
+        UUID matchId = UUID.fromString(uuid);
+
+        OngoingMatchContext matchContext = loadOngoingMatchContext(matchId);
+
+        if (matchContext.getFirstPlayerId() == Long.parseLong(playerId)) {
+            Score currentPlayerScore = matchContext.getFirstPlayerScore();
+            Score opponentPlayerScore = matchContext.getSecondPlayerScore();
 
             checkCountGames(currentPlayerScore, opponentPlayerScore);
         }
 
-        if (secondPlayerId == Long.parseLong(playerId)) {
-            Score currentPlayerScore = currentMatch.getSecondPlayerScore();
-            Score opponentPlayerScore = currentMatch.getFirstPlayerScore();
+        if (matchContext.getSecondPlayerId() == Long.parseLong(playerId)) {
+            Score currentPlayerScore = matchContext.getSecondPlayerScore();
+            Score opponentPlayerScore = matchContext.getFirstPlayerScore();
 
             checkCountGames(currentPlayerScore, opponentPlayerScore);
         }
+
+
     }
 
     private void addPoints(Score currentPlayerScore, Score opponentPlayerScore){
@@ -107,61 +155,71 @@ public class MatchScoreService {
 
     public CurrentMatchViewDto getMatchView(String uuid) {
         UUID matchId = UUID.fromString(uuid);
-        CurrentMatch currentMatch = currentMatchStorage.getMap().get(matchId);
 
-        Long firstPlayerId = currentMatch.getFirstPlayerId();
-        Long secondPlayerId = currentMatch.getSecondPlayerId();
+        OngoingMatchContext matchContext = loadOngoingMatchContext(matchId);
 
-        Player firstPlayer = playerDao.findByID(firstPlayerId);
-        Player secondPlayer = playerDao.findByID(secondPlayerId);
-
-        Score firstPlayerScore = currentMatch.getFirstPlayerScore();
-        Score secondPlayerScore = currentMatch.getSecondPlayerScore();
-
-        PlayerViewDto firstPlayerDto = new PlayerViewDto(firstPlayerId, firstPlayer.getName());
-        PlayerViewDto secondPlayerDto = new PlayerViewDto(secondPlayerId, secondPlayer.getName());
+        PlayerViewDto firstPlayerDto = new PlayerViewDto(
+                matchContext.getFirstPlayerId(),
+                matchContext.firstPlayer.getName()
+        );
+        PlayerViewDto secondPlayerDto = new PlayerViewDto(
+                matchContext.secondPlayerId,
+                matchContext.secondPlayer.getName()
+        );
         return new CurrentMatchViewDto(
                 matchId,
                 firstPlayerDto,
                 secondPlayerDto,
-                firstPlayerScore,
-                secondPlayerScore
+                matchContext.firstPlayerScore,
+                matchContext.secondPlayerScore
         );
     }
 
     public Optional<MatchOverViewDto> getMatchOverView(String uuid){
         UUID matchId = UUID.fromString(uuid);
+
+        OngoingMatchContext matchContext = loadOngoingMatchContext(matchId);
         CurrentMatch currentMatch = currentMatchStorage.getMap().get(matchId);
-
-        Long firstPlayerId = currentMatch.getFirstPlayerId();
-        Long secondPlayerId = currentMatch.getSecondPlayerId();
-
-        Player firstPlayer = playerDao.findByID(firstPlayerId);
-        Player secondPlayer = playerDao.findByID(secondPlayerId);
 
         int firstPlayerSets = currentMatch.getFirstPlayerScore().getSets();
         int secondPlayerSets = currentMatch.getSecondPlayerScore().getSets();
 
 
         if (firstPlayerSets > secondPlayerSets){
-            String winnerName = firstPlayer.getName();
-            int winnerSets = currentMatch.getFirstPlayerScore().getSets();
-            String loserName = secondPlayer.getName();
+            String winnerName = matchContext.firstPlayer.getName();
+            int winnerSets = matchContext.getFirstPlayerScore().getSets();
+            String loserName = matchContext.secondPlayer.getName();
             int loserSets = currentMatch.getSecondPlayerScore().getSets();
+            Long winnerId = matchContext.firstPlayerId;
+
+            completedMatchService.safe(
+                    matchContext.firstPlayerId,
+                    matchContext.secondPlayerId,
+                    winnerId
+            );
 
             return Optional.of(new MatchOverViewDto(winnerName,winnerSets,loserName,loserSets));
         }
         if (firstPlayerSets < secondPlayerSets){
-            String winnerName = secondPlayer.getName();
+            String winnerName = matchContext.secondPlayer.getName();
             int winnerSets = currentMatch.getSecondPlayerScore().getSets();
-            String loserName = firstPlayer.getName();
+            String loserName = matchContext.firstPlayer.getName();
             int loserSets = currentMatch.getFirstPlayerScore().getSets();
+            Long winnerId = matchContext.secondPlayerId;
+
+
+            completedMatchService.safe(
+                    matchContext.firstPlayerId,
+                    matchContext.secondPlayerId,
+                    winnerId
+            );
 
             return Optional.of(new MatchOverViewDto(winnerName,winnerSets,loserName,loserSets));
         }
 
         return Optional.empty();
     }
+
 
 
 

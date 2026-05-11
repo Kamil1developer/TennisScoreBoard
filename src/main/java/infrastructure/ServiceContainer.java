@@ -1,6 +1,7 @@
 package infrastructure;
 
-import service.MatchScoreService;
+import service.CompletedMatchService;
+import service.OngoingMatchService;
 import service.NewMatchService;
 import lombok.Getter;
 import storages.CurrentMatchStorage;
@@ -9,11 +10,14 @@ import storages.CurrentMatchStorage;
 public class ServiceContainer {
 
     private final NewMatchService newMatchService;
-    private final MatchScoreService matchScoreService;
+    private final OngoingMatchService ongoingMatchService;
+    private final CompletedMatchService completedMatchService;
 
     public ServiceContainer(DaoContainer daoContainer) {
         CurrentMatchStorage matchStorage = new CurrentMatchStorage();
         this.newMatchService = new NewMatchService(daoContainer.playerDao(), matchStorage);
-        this.matchScoreService = new MatchScoreService(daoContainer.playerDao(),matchStorage);
+        this.completedMatchService = new CompletedMatchService(daoContainer.matchDao());
+        this.ongoingMatchService = new OngoingMatchService(daoContainer.playerDao(),matchStorage,completedMatchService);
+
     }
 }

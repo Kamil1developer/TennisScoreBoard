@@ -16,7 +16,7 @@ public class ServiceContainer {
     public ServiceContainer(DaoContainer daoContainer) {
         CurrentMatchStorage matchStorage = new CurrentMatchStorage();
         this.newMatchService = new NewMatchService(daoContainer.playerDao(), matchStorage);
-        this.completedMatchService = new CompletedMatchService(daoContainer.matchDao());
+        this.completedMatchService = new CompletedMatchService(daoContainer.matchDao(), daoContainer.playerDao(), matchStorage);
         this.ongoingMatchService = new OngoingMatchService(daoContainer.playerDao(),matchStorage,completedMatchService);
 
     }

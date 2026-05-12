@@ -25,12 +25,10 @@ public class HibernateMatchDao implements MatchDao {
         }
     }
 
-    @Override
     public void findById() {
 
     }
 
-    @Override
     public void findAll() {
 
     }

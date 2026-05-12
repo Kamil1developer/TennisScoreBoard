@@ -96,10 +96,8 @@
                         </tbody>
                     </table>
 
-                    <a class="match-home-button" href="index">
-                        <button class="btn view-home">
-                            Home
-                        </button>
+                    <a class="match-home-button" href="">
+                        Home
                     </a>
                     </c:when>
                 </c:choose>

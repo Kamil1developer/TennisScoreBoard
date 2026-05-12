@@ -96,7 +96,7 @@
                         </tbody>
                     </table>
 
-                    <a class="match-home-button" href="">
+                    <a class="match-home-button" href="${pageContext.request.contextPath}/">
                         Home
                     </a>
                     </c:when>

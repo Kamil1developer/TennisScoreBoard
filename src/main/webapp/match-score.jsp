@@ -36,71 +36,73 @@
         <h1>Current match</h1>
         <div class="current-match-image"></div>
         <section class="score">
-            <table class="table">
                 <c:choose>
                     <c:when test="${matchInProgress}">
-                    <tbody>
-                        <thead class="result">
-                        <tr>
-                            <th class="table-text">Player</th>
-                            <th class="table-text">Sets</th>
-                            <th class="table-text">Games</th>
-                            <th class="table-text">Points</th>
-                        </tr>
-                        </thead>
-                        <tr class="player1">
-                            <td class="table-text">${currentMatchView.firstPlayerDto.name}</td>
-                            <td class="table-text">${currentMatchView.firstPlayerScore.sets}</td>
-                            <td class="table-text">${currentMatchView.firstPlayerScore.games}</td>
-                            <td class="table-text">${currentMatchView.firstPlayerScore.points}</td>
-                            <td class="table-text">
-                                <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${currentMatchView.uuid}">
-                                    <input type="hidden" name="playerId" value="${currentMatchView.firstPlayerDto.id}">
-                                    <button type="submit" class="score-btn">Score</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr class="player2">
-                            <td class="table-text">${currentMatchView.secondPlayerDto.name}</td>
-                            <td class="table-text">${currentMatchView.secondPlayerScore.sets}</td>
-                            <td class="table-text">${currentMatchView.secondPlayerScore.games}</td>
-                            <td class="table-text">${currentMatchView.secondPlayerScore.points}</td>
-                            <td class="table-text">
-                               <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${currentMatchView.uuid}">
-                                   <input type="hidden" name="playerId" value="${currentMatchView.secondPlayerDto.id}">
-                                   <button type="submit" class="score-btn">Score</button>
-                               </form>
-                           </td>
-                        </tr>
-                    </tbody>
+                    <table class="table">
+                        <tbody>
+                            <thead class="result">
+                            <tr>
+                                <th class="table-text">Player</th>
+                                <th class="table-text">Sets</th>
+                                <th class="table-text">Games</th>
+                                <th class="table-text">Points</th>
+                            </tr>
+                            </thead>
+                            <tr class="player1">
+                                <td class="table-text">${currentMatchView.firstPlayerDto.name}</td>
+                                <td class="table-text">${currentMatchView.firstPlayerScore.sets}</td>
+                                <td class="table-text">${currentMatchView.firstPlayerScore.games}</td>
+                                <td class="table-text">${currentMatchView.firstPlayerScore.points}</td>
+                                <td class="table-text">
+                                    <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${currentMatchView.uuid}">
+                                        <input type="hidden" name="playerId" value="${currentMatchView.firstPlayerDto.id}">
+                                        <button type="submit" class="score-btn">Score</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr class="player2">
+                                <td class="table-text">${currentMatchView.secondPlayerDto.name}</td>
+                                <td class="table-text">${currentMatchView.secondPlayerScore.sets}</td>
+                                <td class="table-text">${currentMatchView.secondPlayerScore.games}</td>
+                                <td class="table-text">${currentMatchView.secondPlayerScore.points}</td>
+                                <td class="table-text">
+                                   <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${currentMatchView.uuid}">
+                                       <input type="hidden" name="playerId" value="${currentMatchView.secondPlayerDto.id}">
+                                       <button type="submit" class="score-btn">Score</button>
+                                   </form>
+                               </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     </c:when>
 
                     <c:when test="${matchOver}">
-                    <tbody>
-                        <thead class="result">
-                        <tr>
-                            <th class="table-text">Player</th>
-                            <th class="table-text">Sets</th>
-                        </tr>
-                        </thead>
-                        <tr class="matchOver">
-                            <td class="table-text">${matchOverView.winnerName}</td>
-                            <td class="table-text">${matchOverView.winnerSets}</td>
-                        </tr>
-                        <tr class="matchOver">
-                            <td class="table-text">${matchOverView.loserName}</td>
-                            <td class="table-text">${matchOverView.loserSets}</td>
-                        </tr>
-                    </tbody>
-                        <a class="homepage-action-button" href="index">
-                            <button class="btn view-results">
-                                Home
-                            </button>
-                        </a>
+                    <table>
+                        <tbody>
+                            <thead class="result">
+                                <tr>
+                                    <th class="table-text">Player</th>
+                                    <th class="table-text">Sets</th>
+                                </tr>
+                            </thead>
+                                <tr class="matchOver">
+                                    <td class="table-text">${matchOverView.winnerName}</td>
+                                    <td class="table-text">${matchOverView.winnerSets}</td>
+                                </tr>
+                                <tr class="matchOver">
+                                    <td class="table-text">${matchOverView.loserName}</td>
+                                    <td class="table-text">${matchOverView.loserSets}</td>
+                                </tr>
+                        </tbody>
+                    </table>
+
+                    <a class="homepage-action-button" href="index">
+                        <button class="btn .view-home">
+                            Home
+                        </button>
+                    </a>
                     </c:when>
                 </c:choose>
-                </tbody>
-            </table>
         </section>
     </div>
 </main>

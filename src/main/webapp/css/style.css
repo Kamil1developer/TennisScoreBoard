@@ -141,6 +141,13 @@ footer {
 .view-results {
     background-color: #e7e7e7;
 }
+.view-home{
+    border-radius: 23px;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 9px 0;
+}
+
 
 .start-match {
     background-color: #42a7f5;

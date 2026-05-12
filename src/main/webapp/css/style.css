@@ -531,3 +531,21 @@ footer {
 .num-page.current {
     font-weight: bold;
 }
+
+a.match-home-button {
+    display: block;
+    width: 200px;
+    margin: 20px auto 0;
+    padding: 9px 0;
+    border-radius: 23px;
+    background-color: #42a7f5;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+a.match-home-button:visited {
+    color: #fff;
+}

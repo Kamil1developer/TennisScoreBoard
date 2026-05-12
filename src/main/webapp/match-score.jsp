@@ -37,10 +37,9 @@
         <div class="current-match-image"></div>
         <section class="score">
             <table class="table">
-
-                <tbody>
                 <c:choose>
                     <c:when test="${matchInProgress}">
+                    <tbody>
                         <thead class="result">
                         <tr>
                             <th class="table-text">Player</th>
@@ -73,9 +72,11 @@
                                </form>
                            </td>
                         </tr>
+                    </tbody>
                     </c:when>
 
                     <c:when test="${matchOver}">
+                    <tbody>
                         <thead class="result">
                         <tr>
                             <th class="table-text">Player</th>
@@ -90,6 +91,12 @@
                             <td class="table-text">${matchOverView.loserName}</td>
                             <td class="table-text">${matchOverView.loserSets}</td>
                         </tr>
+                    </tbody>
+                        <a class="homepage-action-button" href="index">
+                            <button class="btn view-results">
+                                Home
+                            </button>
+                        </a>
                     </c:when>
                 </c:choose>
                 </tbody>

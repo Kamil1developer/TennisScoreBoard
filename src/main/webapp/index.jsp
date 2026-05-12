@@ -22,8 +22,8 @@
         </div>
         <div>
             <nav class="nav-links">
-                <a class="nav-link" href="#">Home</a>
-                <a class="nav-link" href="#">Matches</a>
+                <a class="nav-link" href="index">Home</a>
+                <a class="nav-link" href="matches">Matches</a>
             </nav>
         </div>
     </section>
@@ -39,7 +39,7 @@
                     Start a new match
                 </button>
             </a>
-            <a class="homepage-action-button" href="#">
+            <a class="homepage-action-button" href="matches">
                 <button class="btn view-results">
                     View match results
                 </button>

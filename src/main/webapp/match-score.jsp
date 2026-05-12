@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=2">
+    <link rel="stylesheet" href="css/style.css?v=2">
     <script src="js/app.js"></script>
 </head>
 <body>
@@ -95,7 +95,7 @@
                         </tbody>
                     </table>
 
-                    <a class="match-home-button" href="${pageContext.request.contextPath}/">
+                    <a class="match-home-button" href="">
                         Home
                     </a>
                     </c:when>

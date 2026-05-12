@@ -118,10 +118,9 @@ footer {
 .homepage-action-button {
     display: block;
     margin-top: 20px;
-    width: 100%;
+    width: 70%;
 }
 
-/* Welcome Section */
 .welcome-image {
     border-radius: 30px;
     margin-top: 20px;

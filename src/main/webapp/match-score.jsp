@@ -97,7 +97,7 @@
                     </table>
 
                     <a class="homepage-action-button" href="index">
-                        <button class="btn .view-home">
+                        <button class="btn view-home">
                             Home
                         </button>
                     </a>

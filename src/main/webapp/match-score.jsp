@@ -96,7 +96,7 @@
                         </tbody>
                     </table>
 
-                    <a class="homepage-action-button" href="index">
+                    <a class="match-home-button" href="index">
                         <button class="btn view-home">
                             Home
                         </button>

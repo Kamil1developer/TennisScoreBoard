@@ -1,9 +1,11 @@
 package dto.view;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 @AllArgsConstructor
 public class PaginatedMatchesViewDto {
     private final List<MatchRowViewDto> matchesList;

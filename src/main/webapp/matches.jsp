@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <table class="table-matches">
+<%--         <table class="table-matches">
             <tr>
                 <th>Player One</th>
                 <th>Player Two</th>
@@ -72,7 +72,7 @@
                 <td><span class="winner-name-td">Rafael Nadal</span></td>
             </tr>
         </table>
-
+--%>
         <div class="pagination">
 
             <c:if test="${matchesPage.hasPrevious}">

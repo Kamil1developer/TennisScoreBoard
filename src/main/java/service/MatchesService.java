@@ -21,14 +21,22 @@ public class MatchesService {
         this.matchDao = matchDao;
     }
 
+    private record MatchPaginationContext(
+            List<Match> matches,
+            List<MatchRowViewDto> matchesOnPage,
+            List<List<MatchRowViewDto>> matchPages
+    ) {}
+
     public Optional<List<PaginatedMatchesViewDto>> showMatches(){
         Optional<List<Match>> optionalMatches = matchDao.findAll();
         if (optionalMatches.isPresent()){
-            List<List<MatchRowViewDto>> matchPages = new LinkedList<>();
 
+            List<List<MatchRowViewDto>> matchPages = new LinkedList<>();
+            List<MatchRowViewDto> matchesOnPage = new LinkedList<>();
             List<Match> matches = optionalMatches.get();
             for (int i = 0; i < matches.size(); i++){
-                List<MatchRowViewDto> matchesOnPage = getMatches(matches, i);
+                MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, matchPages);
+                addMatchToPage(context, i);
                 matchPages.add(matchesOnPage);
             }
             List<PaginatedMatchesViewDto> paginatedMatchPages = buildPaginatedMatchesView(matchPages);
@@ -92,10 +100,9 @@ public class MatchesService {
 
 
 
-    private List<MatchRowViewDto> getMatches(List<Match> matches, int i) {
-        List<MatchRowViewDto> matchesOnPage = new LinkedList<>();
-        for(int j = 0; j <= 5; j++) {
-            Match match = matches.get(i);
+    private void addMatchToPage(MatchPaginationContext context, int i) {
+        if (i + 1 % 5 != 0) {
+            Match match = context.matches.get(i);
             Player firstPlayer = match.getFirstPlayerId();
             Player secondPlayer = match.getSecondPlayerId();
             Player winner = match.getWinnerId();
@@ -105,10 +112,11 @@ public class MatchesService {
                     secondPlayer.getName(),
                     winner.getName()
             );
-
-            matchesOnPage.add(matchRowViewDto);
+            context.matchesOnPage.add(matchRowViewDto);
         }
-
-        return matchesOnPage;
+        else{
+            context.matchPages.add(context.matchesOnPage);
+            context.matchesOnPage.clear();
+        }
     }
 }

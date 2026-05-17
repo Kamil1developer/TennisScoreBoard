@@ -7,6 +7,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.util.List;
+import java.util.Optional;
+
 @AllArgsConstructor
 public class HibernateMatchDao implements MatchDao {
     private final SessionFactory sessionFactory;
@@ -29,7 +32,20 @@ public class HibernateMatchDao implements MatchDao {
 
     }
 
-    public void findAll() {
+    public Optional<List<Match>> findAll() {
+        Transaction transaction = null;
 
+        try(Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            List<Match> matches = session.createQuery("from Matches", Match.class).getResultList();
+
+            transaction.commit();
+            return Optional.of(matches);
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+        return Optional.empty();
     }
 }

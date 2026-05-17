@@ -74,11 +74,39 @@
         </table>
 
         <div class="pagination">
-            <a class="prev" href="#"> < </a>
-            <a class="num-page current" href="#">1</a>
-            <a class="num-page" href="#">2</a>
-            <a class="num-page" href="#">3</a>
-            <a class="next" href="#"> > </a>
+
+            <c:if test="${matchesPage.hasPrevious}">
+                <a class="prev"
+                   href="${pageContext.request.contextPath}/matches?page=${matchesPage.currentPage - 1}">
+                    &lt;
+                </a>
+            </c:if>
+
+            <c:forEach begin="1" end="${totalPages}" var="pageNumber">
+                <c:choose>
+                    <c:when test="${pageNumber == matchesPage.currentPage}">
+                        <a class="num-page current"
+                           href="${pageContext.request.contextPath}/matches?page=${pageNumber}">
+                            ${pageNumber}
+                        </a>
+                    </c:when>
+
+                    <c:otherwise>
+                        <a class="num-page"
+                           href="${pageContext.request.contextPath}/matches?page=${pageNumber}">
+                            ${pageNumber}
+                        </a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+
+            <c:if test="${pageDto.hasNext}">
+                <a class="next"
+                   href="${pageContext.request.contextPath}/matches?page=${pageDto.currentPage + 1}">
+                    &gt;
+                </a>
+            </c:if>
+
         </div>
     </div>
 </main>

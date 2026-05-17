@@ -37,7 +37,6 @@ public class MatchesService {
             for (int i = 0; i < matches.size(); i++){
                 MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, matchPages);
                 addMatchToPage(context, i);
-                matchPages.add(matchesOnPage);
             }
             List<PaginatedMatchesViewDto> paginatedMatchPages = buildPaginatedMatchesView(matchPages);
 
@@ -97,7 +96,6 @@ public class MatchesService {
 
         return paginatedMatchPages;
     }
-
 
 
     private void addMatchToPage(MatchPaginationContext context, int i) {

@@ -18,8 +18,10 @@ public class AppContextListener implements ServletContextListener {
         DaoContainer daoContainer = new DaoContainer(factory);
         ServiceContainer serviceContainer = new ServiceContainer(daoContainer);
         AppContainer container = new AppContainer(serviceContainer, daoContainer);
-
         servletContext.setAttribute("appContainer", container);
+
+        TestDataInitializer dataInitializer = new TestDataInitializer(factory);
+        dataInitializer.createTestMatches();
 
     }
 }

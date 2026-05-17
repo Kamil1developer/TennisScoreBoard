@@ -37,7 +37,7 @@ public class HibernateMatchDao implements MatchDao {
 
         try(Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            List<Match> matches = session.createQuery("from Matches", Match.class).getResultList();
+            List<Match> matches = session.createQuery("from Match", Match.class).getResultList();
 
             transaction.commit();
             return Optional.of(matches);

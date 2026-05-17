@@ -2,6 +2,7 @@ package servlet;
 
 import bootstrap.AppContainer;
 import dto.page.MatchesOnPageViewDto;
+import dto.view.MatchRowViewDto;
 import dto.view.PaginatedMatchesViewDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,15 +20,28 @@ public class MatchesServlet extends HttpServlet {
     private MatchesService matchesService;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String pageParameter = req.getParameter("page");
         Optional<List<PaginatedMatchesViewDto>> optionalList = matchesService.showMatches();
-        if (optionalList.isPresent()){
+        if (optionalList.isPresent()) {
             List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();
             int totalPages = paginatedMatchPages.size();
             req.setAttribute("totalPages", totalPages);
-            for (PaginatedMatchesViewDto paginatedMatchPage: paginatedMatchPages) {
+
+            if (pageParameter == null) {
+                PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.get(1);
+                List <MatchRowViewDto> matchesList = paginatedMatchPage.getMatchesList();
+
+                req.setAttribute("matchesList", matchesList);
                 req.setAttribute("matchesPage", paginatedMatchPage);
             }
+            else{
+                int pageNumber = Integer.parseInt(pageParameter);
+                PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.get(pageNumber);
+                List <MatchRowViewDto> matchesList = paginatedMatchPage.getMatchesList();
 
+                req.setAttribute("matchesList", matchesList);
+                req.setAttribute("matchesPage", paginatedMatchPage);
+            }
         }
         req.getRequestDispatcher("/matches.jsp").forward(req,resp);
     }

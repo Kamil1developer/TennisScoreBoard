@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -40,39 +41,8 @@
             </div>
         </div>
 
-<%--         <table class="table-matches">
-            <tr>
-                <th>Player One</th>
-                <th>Player Two</th>
-                <th>Winner</th>
-            </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Rafael Nadal</span></td>
-            </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Roger Federer</span></td>
-            </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Rafael Nadal</span></td>
-            </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Roger Federer</span></td>
-            </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Rafael Nadal</span></td>
-            </tr>
+
         </table>
---%>
         <div class="pagination">
 
             <c:if test="${matchesPage.hasPrevious}">
@@ -81,7 +51,12 @@
                     &lt;
                 </a>
             </c:if>
-
+         <table class="table-matches">
+            <tr>
+                <th>Player One</th>
+                <th>Player Two</th>
+                <th>Winner</th>
+            </tr>
             <c:forEach begin="1" end="${totalPages}" var="pageNumber">
                 <c:choose>
                     <c:when test="${pageNumber == matchesPage.currentPage}">
@@ -89,6 +64,13 @@
                            href="${pageContext.request.contextPath}/matches?page=${pageNumber}">
                             ${pageNumber}
                         </a>
+                        <c:forEach var="match" items="${matchesPage}">
+                            <tr>
+                                <td>${match.firstPlayerName}</td>
+                                <td>${match.secondPlayerName}</td>
+                                <td><span class="winner-name-td">${match.winnerName}</span></td>
+                            </tr>
+                        </c:forEach>
                     </c:when>
 
                     <c:otherwise>

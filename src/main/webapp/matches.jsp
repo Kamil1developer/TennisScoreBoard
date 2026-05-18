@@ -41,22 +41,32 @@
             </div>
         </div>
 
+        <table class="table-matches">
+            <tr>
+                <th>Player One</th>
+                <th>Player Two</th>
+                <th>Winner</th>
+            </tr>
 
+            <c:forEach var="match" items="${matchesList}">
+                <tr>
+                    <td>${match.firstPlayerName}</td>
+                    <td>${match.secondPlayerName}</td>
+                    <td>
+                        <span class="winner-name-td">${match.winnerName}</span>
+                    </td>
+                </tr>
+            </c:forEach>
         </table>
-        <div class="pagination">
 
+        <div class="pagination">
             <c:if test="${matchesPage.hasPrevious}">
                 <a class="prev"
                    href="${pageContext.request.contextPath}/matches?page=${matchesPage.currentPage - 1}">
                     &lt;
                 </a>
             </c:if>
-         <table class="table-matches">
-            <tr>
-                <th>Player One</th>
-                <th>Player Two</th>
-                <th>Winner</th>
-            </tr>
+
             <c:forEach begin="1" end="${totalPages}" var="pageNumber">
                 <c:choose>
                     <c:when test="${pageNumber == matchesPage.currentPage}">
@@ -64,13 +74,6 @@
                            href="${pageContext.request.contextPath}/matches?page=${pageNumber}">
                             ${pageNumber}
                         </a>
-                        <c:forEach var="match" items="${matchesList}">
-                            <tr>
-                                <td>${match.firstPlayerName}</td>
-                                <td>${match.secondPlayerName}</td>
-                                <td><span class="winner-name-td">${match.winnerName}</span></td>
-                            </tr>
-                        </c:forEach>
                     </c:when>
 
                     <c:otherwise>
@@ -82,13 +85,12 @@
                 </c:choose>
             </c:forEach>
 
-            <c:if test="${pageDto.hasNext}">
+            <c:if test="${matchesPage.hasNext}">
                 <a class="next"
-                   href="${pageContext.request.contextPath}/matches?page=${pageDto.currentPage + 1}">
+                   href="${pageContext.request.contextPath}/matches?page=${matchesPage.currentPage + 1}">
                     &gt;
                 </a>
             </c:if>
-
         </div>
     </div>
 </main>

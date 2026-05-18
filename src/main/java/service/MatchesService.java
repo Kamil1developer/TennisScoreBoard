@@ -119,8 +119,5 @@ public class MatchesService {
             );
             context.matchesOnPage.add(matchRowViewDto);
         }
-        else {
-            context.matchPages.add(context.matchesOnPage);
-        }
     }
 }

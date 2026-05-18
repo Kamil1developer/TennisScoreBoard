@@ -31,6 +31,7 @@ public class MatchesService {
         Optional<List<Match>> optionalMatches = matchDao.findAll();
         if (optionalMatches.isPresent()){
 
+            List<PaginatedMatchesViewDto> paginatedMatchPages = new LinkedList<>();
             List<List<MatchRowViewDto>> pages = new LinkedList<>();
             List<MatchRowViewDto> matchesOnPage = new LinkedList<>();
             List<Match> matches = optionalMatches.get();
@@ -42,19 +43,16 @@ public class MatchesService {
                     addMatchToPage(context, i);
                 }
                 else{
+                    buildPaginatedMatchesView(paginatedMatchPages, pages);
                     matchesOnPage.clear();
                 }
             }
-            List<PaginatedMatchesViewDto> paginatedMatchPages = buildPaginatedMatchesView(pages);
-
             return Optional.of(paginatedMatchPages);
         }
         return  Optional.empty();
     }
 
-    private List<PaginatedMatchesViewDto> buildPaginatedMatchesView(List<List<MatchRowViewDto>> matchPages){
-        List<PaginatedMatchesViewDto> paginatedMatchPages = new LinkedList<>();
-
+    private void buildPaginatedMatchesView(List<PaginatedMatchesViewDto> paginatedMatchPages, List<List<MatchRowViewDto>> matchPages){
         int totalPages = matchPages.size();
         for (int i = 0; i < matchPages.size(); i++){
 
@@ -100,8 +98,6 @@ public class MatchesService {
                 paginatedMatchPages.add(paginatedMatchPage);
             }
         }
-
-        return paginatedMatchPages;
     }
 
 

@@ -123,7 +123,7 @@ public class MatchesService {
             );
             context.matchesOnPage.add(matchRowViewDto);
         }
-        else {
+        if ((i + 1) % 5 == 0) {
             context.matchPages.add(context.matchesOnPage);
 
             context.matchesOnPage.clear();

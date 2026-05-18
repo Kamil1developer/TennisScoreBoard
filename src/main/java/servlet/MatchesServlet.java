@@ -28,7 +28,7 @@ public class MatchesServlet extends HttpServlet {
             req.setAttribute("totalPages", totalPages);
 
             if (pageParameter == null) {
-                PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.get(1);
+                PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.getFirst();
                 List <MatchRowViewDto> matchesList = paginatedMatchPage.getMatchesList();
 
                 req.setAttribute("matchesList", matchesList);
@@ -36,7 +36,7 @@ public class MatchesServlet extends HttpServlet {
             }
             else{
                 int pageNumber = Integer.parseInt(pageParameter);
-                PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.get(pageNumber);
+                PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.get(pageNumber - 1);
                 List <MatchRowViewDto> matchesList = paginatedMatchPage.getMatchesList();
 
                 req.setAttribute("matchesList", matchesList);

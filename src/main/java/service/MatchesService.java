@@ -31,14 +31,14 @@ public class MatchesService {
         Optional<List<Match>> optionalMatches = matchDao.findAll();
         if (optionalMatches.isPresent()){
 
-            List<List<MatchRowViewDto>> matchPages = new LinkedList<>();
+            List<List<MatchRowViewDto>> pages = new LinkedList<>();
             List<MatchRowViewDto> matchesOnPage = new LinkedList<>();
             List<Match> matches = optionalMatches.get();
             for (int i = 0; i < matches.size(); i++){
-                MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, matchPages);
+                MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
                 addMatchToPage(context, i);
             }
-            List<PaginatedMatchesViewDto> paginatedMatchPages = buildPaginatedMatchesView(matchPages);
+            List<PaginatedMatchesViewDto> paginatedMatchPages = buildPaginatedMatchesView(pages);
 
             return Optional.of(paginatedMatchPages);
         }
@@ -99,7 +99,7 @@ public class MatchesService {
 
 
     private void addMatchToPage(MatchPaginationContext context, int i) {
-        if ((i + 1) % 5 != 0) {
+        if ((i) % 5 != 0) {
             Match match = context.matches.get(i);
             Player firstPlayer = match.getFirstPlayerId();
             Player secondPlayer = match.getSecondPlayerId();

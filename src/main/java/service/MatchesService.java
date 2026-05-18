@@ -48,7 +48,7 @@ public class MatchesService {
                 }
             }
 
-            if (matchesOnPage.size() != 0){
+            if (pages.size() != 0){
                 buildPaginatedMatchesView(paginatedMatchPages, pages, matchesOnPage);
                 matchesOnPage.clear();
             }

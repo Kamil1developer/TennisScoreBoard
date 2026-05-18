@@ -42,8 +42,15 @@ public class MatchesService {
                 addMatchToPage(context, i);
             }
 
-            if (pages.size() != 0){
-                buildPaginatedMatchesView(paginatedMatchPages, pages, matchesOnPage);
+            if (!matchesOnPage.isEmpty()) {
+                pages.add(new ArrayList<>(matchesOnPage));
+
+                matchesOnPage.clear();
+            }
+
+            if (!pages.isEmpty()){
+                MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
+                buildPaginatedMatchesView(context, paginatedMatchPages);
                 matchesOnPage.clear();
             }
             return Optional.of(paginatedMatchPages);
@@ -51,18 +58,22 @@ public class MatchesService {
         return  Optional.empty();
     }
 
-    private void buildPaginatedMatchesView(
-            List<PaginatedMatchesViewDto> paginatedMatchPages,
-            List<List<MatchRowViewDto>> matchPages,
-            List<MatchRowViewDto> matchesOnPage
-    ){
-        int totalPages = matchPages.size();
-        for (int i = 0; i < matchPages.size(); i++){
+    private void buildPaginatedMatchesView(MatchPaginationContext context, List<PaginatedMatchesViewDto> paginatedMatchPages){
+        int matches = context.matches.size();
+        int matchPages = context.matchPages.size();
+        int totalPages;
+        if (matches % matchPages != 0){
+            totalPages = matches / matchPages + 1;
+        }
+        else{
+            totalPages = matches / matchPages;
+        }
+        for (int i = 0; i < totalPages; i++){
 
             int pageNumber = i + 1;
             if (pageNumber == 1){
                 PaginatedMatchesViewDto paginatedMatchPage = new PaginatedMatchesViewDto(
-                        matchPages.get(i),
+                        context.matchPages.get(i),
                         pageNumber,
                         false,
                         false
@@ -72,7 +83,7 @@ public class MatchesService {
             }
             else if (pageNumber > 1 && pageNumber < totalPages){
                 PaginatedMatchesViewDto paginatedMatchPage = new PaginatedMatchesViewDto(
-                        matchPages.get(i),
+                        context.matchPages.get(i),
                         pageNumber,
                         true,
                         true
@@ -82,7 +93,7 @@ public class MatchesService {
             }
             else if (pageNumber > 1 && pageNumber == totalPages){
                 PaginatedMatchesViewDto paginatedMatchPage = new PaginatedMatchesViewDto(
-                        matchPages.get(i),
+                        context.matchPages.get(i),
                         pageNumber,
                         true,
                         false
@@ -92,7 +103,7 @@ public class MatchesService {
             }
             else if (pageNumber == 1 && pageNumber < totalPages){
                 PaginatedMatchesViewDto paginatedMatchPage = new PaginatedMatchesViewDto(
-                        matchPages.get(i),
+                        context.matchPages.get(i),
                         pageNumber,
                         false,
                         true

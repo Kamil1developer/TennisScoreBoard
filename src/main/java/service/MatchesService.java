@@ -9,6 +9,7 @@ import dto.view.PaginatedMatchesViewDto;
 import entity.Match;
 import entity.Player;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -124,7 +125,7 @@ public class MatchesService {
             context.matchesOnPage.add(matchRowViewDto);
         }
         if ((i + 1) % 5 == 0) {
-            context.matchPages.add(context.matchesOnPage);
+            context.matchPages.add(new ArrayList<>(context.matchesOnPage));
 
             context.matchesOnPage.clear();
         }

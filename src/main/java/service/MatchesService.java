@@ -38,7 +38,7 @@ public class MatchesService {
 
             int matchesCount = matches.size();
             for (int i = 0; i < matchesCount; i++){
-                if (matchesCount % 5 != 0 || i != 0) {
+                if (matchesCount % 5 != 0 || i == 0) {
                     MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
                     addMatchToPage(context, i);
                 }

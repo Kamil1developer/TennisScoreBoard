@@ -31,16 +31,14 @@ public class MatchesServlet extends HttpServlet {
                 PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.getFirst();
                 List <MatchRowViewDto> matchesList = paginatedMatchPage.getMatchesList();
 
-                req.setAttribute("matchesList", matchesList);
-                req.setAttribute("matchesPage", paginatedMatchPage);
+                req.setAttribute("matchesPage", matchesList);
             }
             else{
                 int pageNumber = Integer.parseInt(pageParameter);
                 PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.get(pageNumber - 1);
                 List <MatchRowViewDto> matchesList = paginatedMatchPage.getMatchesList();
 
-                req.setAttribute("matchesList", matchesList);
-                req.setAttribute("matchesPage", paginatedMatchPage);
+                req.setAttribute("matchesPage", matchesList);
             }
         }
         req.getRequestDispatcher("/matches.jsp").forward(req,resp);

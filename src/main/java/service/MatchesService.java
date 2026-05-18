@@ -42,7 +42,7 @@ public class MatchesService {
                     addMatchToPage(context, i);
                 }
                 else{
-                    buildPaginatedMatchesView(paginatedMatchPages, pages);
+                    buildPaginatedMatchesView(paginatedMatchPages, pages,matchesOnPage);
                     matchesOnPage.clear();
                 }
             }
@@ -56,7 +56,11 @@ public class MatchesService {
         return  Optional.empty();
     }
 
-    private void buildPaginatedMatchesView(List<PaginatedMatchesViewDto> paginatedMatchPages, List<List<MatchRowViewDto>> matchPages){
+    private void buildPaginatedMatchesView(
+            List<PaginatedMatchesViewDto> paginatedMatchPages,
+            List<List<MatchRowViewDto>> matchPages,
+            List<MatchRowViewDto> matchesOnPage
+    ){
         int totalPages = matchPages.size();
         for (int i = 0; i < matchPages.size(); i++){
 
@@ -118,6 +122,11 @@ public class MatchesService {
                     winner.getName()
             );
             context.matchesOnPage.add(matchRowViewDto);
+        }
+        else {
+            context.matchPages.add(context.matchesOnPage);
+
+            context.matchesOnPage.clear();
         }
     }
 }

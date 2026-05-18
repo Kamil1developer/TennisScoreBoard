@@ -64,7 +64,7 @@
                            href="${pageContext.request.contextPath}/matches?page=${pageNumber}">
                             ${pageNumber}
                         </a>
-                        <c:forEach var="match" items="${matchesPage}">
+                        <c:forEach var="match" items="${matchesList}">
                             <tr>
                                 <td>${match.firstPlayerName}</td>
                                 <td>${match.secondPlayerName}</td>

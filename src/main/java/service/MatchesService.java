@@ -99,7 +99,7 @@ public class MatchesService {
 
 
     private void addMatchToPage(MatchPaginationContext context, int i) {
-        if ((i) % 5 != 0) {
+        if (i % 5 != 0 || i == 0) {
             Match match = context.matches.get(i);
             Player firstPlayer = match.getFirstPlayerId();
             Player secondPlayer = match.getSecondPlayerId();

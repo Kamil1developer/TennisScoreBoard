@@ -38,14 +38,8 @@ public class MatchesService {
             List<Match> matches = optionalMatches.get();
 
             for (int i = 0; i < matches.size(); i++){
-                if (matchesOnPage.size() % 5 != 0 || matchesOnPage.isEmpty()) {
-                    MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
-                    addMatchToPage(context, i);
-                }
-                else{
-                    buildPaginatedMatchesView(paginatedMatchPages, pages,matchesOnPage);
-                    matchesOnPage.clear();
-                }
+                MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
+                addMatchToPage(context, i);
             }
 
             if (pages.size() != 0){

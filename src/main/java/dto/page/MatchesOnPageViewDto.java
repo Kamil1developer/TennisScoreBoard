@@ -1,6 +1,5 @@
 package dto.page;
 
-import dto.view.MatchRowViewDto;
 import dto.view.PaginatedMatchesViewDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,12 @@
 package dto.view;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public record MatchRowViewDto(
-    String firstPlayerName,
-    String secondPlayerName,
-    String winnerName){}
+@AllArgsConstructor
+@Getter
+public class MatchRowViewDto{
+    private String firstPlayerName;
+    private String secondPlayerName;
+    private String winnerName;
+}

@@ -34,9 +34,16 @@ public class MatchesService {
             List<List<MatchRowViewDto>> pages = new LinkedList<>();
             List<MatchRowViewDto> matchesOnPage = new LinkedList<>();
             List<Match> matches = optionalMatches.get();
-            for (int i = 0; i < matches.size(); i++){
-                MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
-                addMatchToPage(context, i);
+
+            int matchesCount = matches.size();
+            for (int i = 0; i < matchesCount; i++){
+                if (matchesCount % 5 != 0) {
+                    MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
+                    addMatchToPage(context, i);
+                }
+                else{
+                    matchesOnPage.clear();
+                }
             }
             List<PaginatedMatchesViewDto> paginatedMatchPages = buildPaginatedMatchesView(pages);
 

@@ -111,19 +111,18 @@ public class MatchesService {
 
 
     private void addMatchToPage(MatchPaginationContext context, int i) {
-        if (i % 5 != 0 || i == 0) {
-            Match match = context.matches.get(i);
-            Player firstPlayer = match.getFirstPlayerId();
-            Player secondPlayer = match.getSecondPlayerId();
-            Player winner = match.getWinnerId();
+        Match match = context.matches.get(i);
+        Player firstPlayer = match.getFirstPlayerId();
+        Player secondPlayer = match.getSecondPlayerId();
+        Player winner = match.getWinnerId();
 
-            MatchRowViewDto matchRowViewDto = new MatchRowViewDto(
-                    firstPlayer.getName(),
-                    secondPlayer.getName(),
-                    winner.getName()
-            );
-            context.matchesOnPage.add(matchRowViewDto);
-        }
+        MatchRowViewDto matchRowViewDto = new MatchRowViewDto(
+                firstPlayer.getName(),
+                secondPlayer.getName(),
+                winner.getName()
+        );
+        context.matchesOnPage.add(matchRowViewDto);
+
         if ((i + 1) % 5 == 0) {
             context.matchPages.add(new ArrayList<>(context.matchesOnPage));
 

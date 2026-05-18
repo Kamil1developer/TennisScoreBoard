@@ -114,7 +114,6 @@ public class MatchesService {
         }
         else {
             context.matchPages.add(context.matchesOnPage);
-            context.matchesOnPage.clear();
         }
     }
 }

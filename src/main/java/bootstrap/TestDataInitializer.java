@@ -6,6 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 public class TestDataInitializer {
     private final SessionFactory factory;
     public TestDataInitializer(SessionFactory factory){
@@ -22,30 +24,42 @@ public class TestDataInitializer {
             Player winnerPlayer;
 
             transaction = session.beginTransaction();
-            firstPlayer = new Player("Rafael Nadal");
-            secondPlayer = new Player("Roger Federer");
-            session.persist(firstPlayer);
-            session.persist(secondPlayer);
 
-            winnerPlayer = firstPlayer;
-            Match match = new Match(firstPlayer, secondPlayer, winnerPlayer);
-            session.persist(match);
+            List<List<String>> stringList = List.of(
+                    List.of("Rafael Nadal", "Roger Federer"),
+                    List.of("Johnson", "Mike"),
+                    List.of("Nikol", "Tom"),
+                    List.of("Mark", "Jack")
+            );
 
-            winnerPlayer = secondPlayer;
-            match = new Match(firstPlayer, secondPlayer, winnerPlayer);
-            session.persist(match);
+            for (int i = 0; i < 4; i++) {
+                firstPlayer = new Player(stringList.get(i).getFirst());
+                secondPlayer = new Player(stringList.get(i).get(1));
+                session.persist(firstPlayer);
+                session.persist(secondPlayer);
 
-            winnerPlayer = firstPlayer;
-            match = new Match(firstPlayer, secondPlayer, winnerPlayer);
-            session.persist(match);
+                winnerPlayer = firstPlayer;
+                Match match = new Match(firstPlayer, secondPlayer, winnerPlayer);
+                session.persist(match);
 
-            winnerPlayer = secondPlayer;
-            match = new Match(firstPlayer, secondPlayer, winnerPlayer);
-            session.persist(match);
+                winnerPlayer = secondPlayer;
+                match = new Match(firstPlayer, secondPlayer, winnerPlayer);
+                session.persist(match);
 
-            winnerPlayer = firstPlayer;
-            match = new Match(firstPlayer, secondPlayer, winnerPlayer);
-            session.persist(match);
+                winnerPlayer = firstPlayer;
+                match = new Match(firstPlayer, secondPlayer, winnerPlayer);
+                session.persist(match);
+                if(i != 3) {
+                    winnerPlayer = secondPlayer;
+                    match = new Match(firstPlayer, secondPlayer, winnerPlayer);
+                    session.persist(match);
+
+                    winnerPlayer = firstPlayer;
+                    match = new Match(firstPlayer, secondPlayer, winnerPlayer);
+                    session.persist(match);
+                }
+            }
+
 
             transaction.commit();
         }

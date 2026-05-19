@@ -21,7 +21,7 @@ public class MatchesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pageParameter = req.getParameter("page");
-        String filterParameter = req.getParameter("filter_by_player_name");
+        String filterParameter = req.getParameter("playerName");
         Optional<List<PaginatedMatchesViewDto>> optionalList = matchesService.showMatches();
         if (optionalList.isPresent()) {
             List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();

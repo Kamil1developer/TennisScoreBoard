@@ -62,12 +62,9 @@ public class MatchesService {
         int matches = context.matches.size();
         int matchPages = context.matchPages.size();
         int totalPages;
-        if (matches % matchPages != 0){
-            totalPages = matches / matchPages + 1;
-        }
-        else{
-            totalPages = matches / matchPages;
-        }
+
+        totalPages = matches / matchPages;
+
         for (int i = 0; i < totalPages; i++){
 
             int pageNumber = i + 1;

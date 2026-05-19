@@ -36,6 +36,7 @@ public class MatchesService {
             List<List<MatchRowViewDto>> pages = new LinkedList<>();
             List<MatchRowViewDto> matchesOnPage = new LinkedList<>();
             List<Match> matches = optionalMatches.get();
+            matches = matches.reversed();
 
             for (int i = 0; i < matches.size(); i++){
                 MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);

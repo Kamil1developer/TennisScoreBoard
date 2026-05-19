@@ -45,8 +45,8 @@
 
                 <c:otherwise>
                     <div>
-                        <a href="filter_by_player_name=${playerName}">
-                            <button class="btn-filter">Find Filter</button>
+                        <a href="${pageContext.request.contextPath}/matches?filter_by_player_name=${playerName}">
+                            <button class="btn-find">Find Filter</button>
                         </a>
                     </div>
                 </c:otherwise>

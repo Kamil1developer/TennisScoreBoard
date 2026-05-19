@@ -33,7 +33,7 @@
     <div class="container">
         <h1>Matches</h1>
         <div class="input-container">
-            <input class="input-filter" placeholder="Filter by name" type="text" />
+            <input class="input-filter" name="playerName" placeholder="Filter by name" type="text" />
             <c:choose>
                 <c:when test="not empty ${playerName}">
                     <div>

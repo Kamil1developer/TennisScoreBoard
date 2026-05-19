@@ -32,26 +32,29 @@
 <main>
     <div class="container">
         <h1>Matches</h1>
-        <div class="input-container">
-            <input class="input-filter" name="playerName" placeholder="Filter by name" type="text" />
-            <c:choose>
-                <c:when test="not empty ${playerName}">
-                    <div>
-                        <a href="${pageContext.request.contextPath}/matches?filter_by_player_name=${playerName}">
-                            <button class="btn-filter">Reset Filter</button>
-                        </a>
-                    </div>
-                </c:when>
+    <div class="input-container">
 
-                <c:otherwise>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/matches?filter_by_player_name=${playerName}">
-                            <button class="btn-find">Find Filter</button>
-                        </a>
-                    </div>
-                </c:otherwise>
-            </c:choose>
-        </div>
+        <form method="get" action="${pageContext.request.contextPath}/matches" class="filter-form">
+            <input
+                class="input-filter"
+                name="filter_by_player_name"
+                placeholder="Filter by name"
+                type="text"
+                value="${param.filter_by_player_name}"
+            />
+
+            <button class="btn-find" type="submit">
+                Find Filter
+            </button>
+        </form>
+
+        <c:if test="${not empty param.filter_by_player_name}">
+            <a href="${pageContext.request.contextPath}/matches" class="btn-filter">
+                Reset Filter
+            </a>
+        </c:if>
+
+    </div>
 
         <table class="table-matches">
             <tr>

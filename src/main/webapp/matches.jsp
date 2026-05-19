@@ -34,11 +34,23 @@
         <h1>Matches</h1>
         <div class="input-container">
             <input class="input-filter" placeholder="Filter by name" type="text" />
-            <div>
-                <a href="#">
-                    <button class="btn-filter">Reset Filter</button>
-                </a>
-            </div>
+            <c:choose>
+                <c:when test="${not empty ${}}">
+                    <div>
+                        <a href="${pageContext.request.contextPath}/matches?filter_by_player_name=${playerName}">
+                            <button class="btn-filter">Reset Filter</button>
+                        </a>
+                    </div>
+                </c:when>
+
+                <c:otherwise>
+                    <div>
+                        <a href="filter_by_player_name=${playerName}">
+                            <button class="btn-filter">Find Filter</button>
+                        </a>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <table class="table-matches">

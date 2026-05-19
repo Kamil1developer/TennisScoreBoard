@@ -35,7 +35,7 @@
         <div class="input-container">
             <input class="input-filter" placeholder="Filter by name" type="text" />
             <c:choose>
-                <c:when test="${not empty ${playerName}}">
+                <c:when test="not empty ${playerName}">
                     <div>
                         <a href="${pageContext.request.contextPath}/matches?filter_by_player_name=${playerName}">
                             <button class="btn-filter">Reset Filter</button>

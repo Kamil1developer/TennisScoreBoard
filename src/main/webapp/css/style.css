@@ -1,4 +1,4 @@
-/* Убираем внешние отступы */
+
 body,
 h1,
 h2,
@@ -118,23 +118,10 @@ footer {
 .homepage-action-button {
     display: block;
     margin-top: 20px;
-    width: 70%;
+    width: 100%;
 }
 
-.match-home-button {
-    display: block;
-    width: 200px;
-    margin: 20px auto 0;
-    padding: 9px 0;
-    border-radius: 23px;
-    background-color: #42a7f5;
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    font-size: 20px;
-    cursor: pointer;
-}
-
+/* Welcome Section */
 .welcome-image {
     border-radius: 30px;
     margin-top: 20px;
@@ -154,17 +141,6 @@ footer {
 .view-results {
     background-color: #e7e7e7;
 }
-.view-home{
-    border-radius: 23px;
-    cursor: pointer;
-    font-size: 20px;
-    padding: 9px 0;
-}
-.view-home{
-    background-color: #42a7f5;
-}
-
-
 
 .start-match {
     background-color: #42a7f5;
@@ -229,15 +205,29 @@ footer {
     cursor: pointer;
 }
 
+.btn-find,
 .btn-filter {
-    width: 280px;
-    line-height: 45px;
-    margin-left: 20px;
+    height: 45px;
     border-radius: 18px;
     border: none;
     background-color: #42a7f5;
     color: #fff;
     cursor: pointer;
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-find {
+    width: 125px;
+}
+
+
+.btn-filter {
+    width: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Current match */
@@ -295,11 +285,11 @@ footer {
     padding-left: 10px;
 }
 
-.player1, .player2, .matchOver {
+.player1, .player2 {
     font-size: 40px;
 }
 
-.player1 td, .player2 td, .matchOver td{
+.player1 td, .player2 td {
     width: 5%;
     padding: 60px 5px;
     font-family: "Roboto Mono", monospace;
@@ -453,18 +443,27 @@ footer {
 .input-container {
     width: 100%;
     display: flex;
+    align-items: center;
+    gap: 20px;
     margin-top: 20px;
 }
 
+.filter-form {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 20px;
+}
+
 .input-filter {
-    width: 100%;
-    border-radius: 15px;
+    flex: 1;
+    height: 45px;
+    border-radius: 18px;
     background-color: #dddddd;
     border: none;
-    padding-left: 30px;
-    padding-bottom: 12px;
-    padding-top: 12px;
+    padding: 0 30px;
     color: #000;
+    outline: none;
 }
 
 .table-matches {
@@ -530,22 +529,4 @@ footer {
 
 .num-page.current {
     font-weight: bold;
-}
-
-a.match-home-button {
-    display: block;
-    width: 200px;
-    margin: 20px auto 0;
-    padding: 9px 0;
-    border-radius: 23px;
-    background-color: #42a7f5;
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-a.match-home-button:visited {
-    color: #fff;
 }

@@ -214,20 +214,32 @@ footer {
     color: #fff;
     cursor: pointer;
     font-size: 18px;
-    text-align: center;
-    text-decoration: none;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    line-height: 1;
+    box-sizing: border-box;
+    white-space: nowrap;
 }
 
+.reset-form {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
 .btn-find {
-    width: 125px;
+    width: 150px;
 }
-
 
 .btn-filter {
-    width: 125px;
+    width: 170px;
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
 /* Current match */
 
 .current-match-image {

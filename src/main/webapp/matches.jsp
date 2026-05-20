@@ -49,9 +49,11 @@
         </form>
 
         <c:if test="${not empty param.filter_by_player_name}">
-            <a href="${pageContext.request.contextPath}/matches" class="btn-filter">
-                Reset Filter
-            </a>
+            <form method="get" action="${pageContext.request.contextPath}/matches" class="reset-form">
+                <button class="btn-filter" type="submit">
+                    Reset Filter
+                </button>
+            </form>
         </c:if>
 
     </div>

@@ -1,9 +1,6 @@
 package service;
 
 import dao.MatchDao;
-import dao.PlayerDao;
-import dto.page.MatchesOnPageViewDto;
-import dto.view.MatchOverViewDto;
 import dto.view.MatchRowViewDto;
 import dto.view.PaginatedMatchesViewDto;
 import entity.Match;
@@ -15,10 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class MatchesService {
-    private final PlayerDao playerDao;
+
     private final MatchDao matchDao;
-    public MatchesService(PlayerDao playerDao, MatchDao matchDao){
-        this.playerDao = playerDao;
+    public MatchesService(MatchDao matchDao){
         this.matchDao = matchDao;
     }
 
@@ -62,8 +58,6 @@ public class MatchesService {
     }
 
     private void buildPaginatedMatchesView(MatchPaginationContext context, List<PaginatedMatchesViewDto> paginatedMatchPages, int totalPages){
-        int matches = context.matches.size();
-        int matchPages = context.matchPages.size();
 
         for (int i = 0; i < totalPages; i++){
 

@@ -29,7 +29,12 @@ public class MatchesServlet extends HttpServlet {
             optionalList = matchesService.findMatchesByPrefix(filterParameter);
             if (optionalList.isPresent()) {
                 List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();
-                prepareMatchesPageAttributes(paginatedMatchPages, req, pageParameter);
+                if (paginatedMatchPages.size() == 0){
+                    req.setAttribute("matchFound", false);
+                }
+                else {
+                    prepareMatchesPageAttributes(paginatedMatchPages, req, pageParameter);
+                }
             }
 
             req.getRequestDispatcher("/matches.jsp").forward(req, resp);
@@ -42,6 +47,9 @@ public class MatchesServlet extends HttpServlet {
                 List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();
                 if (paginatedMatchPages.size() == 0){
                     req.setAttribute("matchFound", false);
+                }
+                else {
+                    req.setAttribute("matchFound", true);
                 }
                 prepareMatchesPageAttributes(paginatedMatchPages, req, pageParameter);
             }

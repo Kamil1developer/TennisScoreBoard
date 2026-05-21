@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import service.MatchesService;
 
 import java.io.IOException;
+import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,31 +22,50 @@ public class MatchesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pageParameter = req.getParameter("page");
-        String filterParameter = req.getParameter("playerName");
-        Optional<List<PaginatedMatchesViewDto>> optionalList = matchesService.showMatches();
-        if (optionalList.isPresent()) {
-            List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();
-            int totalPages = paginatedMatchPages.size();
-            req.setAttribute("totalPages", totalPages);
+        String filterParameter = req.getParameter("filter_by_player_name");
+        Optional<List<PaginatedMatchesViewDto>> optionalList;
 
-            if (pageParameter == null) {
-                PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.getFirst();
-                List <MatchRowViewDto> matchesList = paginatedMatchPage.getMatchesList();
-
-                req.setAttribute("matchesList", matchesList);
-                req.setAttribute("matchesPage", paginatedMatchPage);
+        if (filterParameter != null) {
+            optionalList = matchesService.findMatchesByPrefix(filterParameter);
+            if (optionalList.isPresent()) {
+                List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();
+                prepareMatchesPageAttributes(paginatedMatchPages, req, pageParameter);
             }
-            else{
-                int pageNumber = Integer.parseInt(pageParameter);
-                PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.get(pageNumber - 1);
-                List <MatchRowViewDto> matchesList = paginatedMatchPage.getMatchesList();
 
-                req.setAttribute("matchesList", matchesList);
-                req.setAttribute("matchesPage", paginatedMatchPage);
-            }
+            req.getRequestDispatcher("/matches.jsp").forward(req, resp);
         }
-        req.setAttribute("playerName", filterParameter);
-        req.getRequestDispatcher("/matches.jsp").forward(req,resp);
+
+        else {
+            optionalList = matchesService.showMatches();
+            if (optionalList.isPresent()) {
+
+                List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();
+                if (paginatedMatchPages.size() == 0){
+                    req.setAttribute("matchFound", false);
+                }
+                prepareMatchesPageAttributes(paginatedMatchPages, req, pageParameter);
+            }
+            req.getRequestDispatcher("/matches.jsp").forward(req, resp);
+        }
+    }
+    private void prepareMatchesPageAttributes(List<PaginatedMatchesViewDto> paginatedMatchPages, HttpServletRequest req, String pageParameter){
+        int totalPages = paginatedMatchPages.size();
+        req.setAttribute("totalPages", totalPages);
+        if (pageParameter == null){
+            PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.getFirst();
+            List<MatchRowViewDto> matchesList = paginatedMatchPage.getMatchesList();
+
+            req.setAttribute("matchesList", matchesList);
+            req.setAttribute("matchesPage", paginatedMatchPage);
+        }
+        else {
+            int pageNumber = Integer.parseInt(pageParameter);
+            PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.get(pageNumber - 1);
+            List<MatchRowViewDto> matchesList = paginatedMatchPage.getMatchesList();
+
+            req.setAttribute("matchesList", matchesList);
+            req.setAttribute("matchesPage", paginatedMatchPage);
+        }
     }
 
     @Override

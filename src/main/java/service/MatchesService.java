@@ -50,8 +50,10 @@ public class MatchesService {
             }
 
             if (!pages.isEmpty()){
+                int totalPages = matches.size() / pages.size();
+
                 MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
-                buildPaginatedMatchesView(context, paginatedMatchPages);
+                buildPaginatedMatchesView(context, paginatedMatchPages, totalPages);
                 matchesOnPage.clear();
             }
             return Optional.of(paginatedMatchPages);
@@ -59,12 +61,9 @@ public class MatchesService {
         return  Optional.empty();
     }
 
-    private void buildPaginatedMatchesView(MatchPaginationContext context, List<PaginatedMatchesViewDto> paginatedMatchPages){
+    private void buildPaginatedMatchesView(MatchPaginationContext context, List<PaginatedMatchesViewDto> paginatedMatchPages, int totalPages){
         int matches = context.matches.size();
         int matchPages = context.matchPages.size();
-        int totalPages;
-
-        totalPages = matches / matchPages;
 
         for (int i = 0; i < totalPages; i++){
 
@@ -112,7 +111,6 @@ public class MatchesService {
         }
     }
 
-
     private void addMatchToPage(MatchPaginationContext context, int i) {
         Match match = context.matches.get(i);
         Player firstPlayer = match.getFirstPlayerId();
@@ -132,4 +130,62 @@ public class MatchesService {
             context.matchesOnPage.clear();
         }
     }
+
+    public Optional<List<PaginatedMatchesViewDto>> findMatchesByPrefix(String playerName){
+        Optional<List<Match>> optionalMatches = matchDao.findAll();
+        if (optionalMatches.isPresent()){
+
+            List<PaginatedMatchesViewDto> paginatedMatchPages = new LinkedList<>();
+            List<List<MatchRowViewDto>> pages = new LinkedList<>();
+            List<MatchRowViewDto> matchesOnPage = new LinkedList<>();
+            List<Match> matches = optionalMatches.get();
+            matches = matches.reversed();
+
+            for (int i = 0; i < matches.size(); i++){
+                MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
+                addMatchToPageIfMatchesPrefix(context, i, playerName);
+            }
+
+            if (!matchesOnPage.isEmpty()) {
+                pages.add(new ArrayList<>(matchesOnPage));
+
+                matchesOnPage.clear();
+            }
+
+            if (!pages.isEmpty()){
+                int totalPages = pages.size();
+
+                MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
+                buildPaginatedMatchesView(context, paginatedMatchPages, totalPages);
+                matchesOnPage.clear();
+            }
+            return Optional.of(paginatedMatchPages);
+        }
+        return  Optional.empty();
+    }
+
+    private void addMatchToPageIfMatchesPrefix(MatchPaginationContext context, int i, String playerName){
+        Match match = context.matches.get(i);
+        Player firstPlayer = match.getFirstPlayerId();
+        Player secondPlayer = match.getSecondPlayerId();
+        Player winner = match.getWinnerId();
+
+        if (playerName.equals(firstPlayer.getName()) ||
+                playerName.equals(secondPlayer.getName())) {
+
+            MatchRowViewDto matchRowViewDto = new MatchRowViewDto(
+                    firstPlayer.getName(),
+                    secondPlayer.getName(),
+                    winner.getName()
+            );
+            context.matchesOnPage.add(matchRowViewDto);
+        }
+
+        if (context.matchesOnPage.size() % 5 == 0 && !context.matchesOnPage.isEmpty()) {
+            context.matchPages.add(new ArrayList<>(context.matchesOnPage));
+
+            context.matchesOnPage.clear();
+        }
+    }
+
 }

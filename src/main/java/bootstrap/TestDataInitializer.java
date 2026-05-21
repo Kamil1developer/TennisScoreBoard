@@ -27,7 +27,7 @@ public class TestDataInitializer {
 
             List<List<String>> stringList = List.of(
                     List.of("Rafael Nadal", "Roger Federer"),
-                    List.of("Johnson", "Mike"),
+                    List.of("Mark", "Jack"),
                     List.of("Nikol", "Tom"),
                     List.of("Mark", "Jack")
             );

@@ -1,7 +1,6 @@
 package servlet;
 
 import bootstrap.AppContainer;
-import dto.page.MatchesOnPageViewDto;
 import dto.view.MatchRowViewDto;
 import dto.view.PaginatedMatchesViewDto;
 import jakarta.servlet.ServletException;
@@ -12,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import service.MatchesService;
 
 import java.io.IOException;
-import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,38 +21,53 @@ public class MatchesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pageParameter = req.getParameter("page");
         String filterParameter = req.getParameter("filter_by_player_name");
-        Optional<List<PaginatedMatchesViewDto>> optionalList;
 
-        if (filterParameter != null) {
-            optionalList = matchesService.findMatchesByPrefix(filterParameter);
-            if (optionalList.isPresent()) {
-                List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();
-                if (paginatedMatchPages.size() == 0){
-                    req.setAttribute("matchFound", false);
-                }
-                else {
-                    prepareMatchesPageAttributes(paginatedMatchPages, req, pageParameter);
-                }
-            }
+        if (filterParameter != null && filterParameter.isEmpty()){
+            resp.sendRedirect(req.getContextPath() + "/matches");
+        }
 
+        else if (filterParameter != null) {
+            prepareFilteredMatchesAttributes(req, filterParameter, pageParameter);
+            req.setAttribute("filterIsEmpty", false);
+            req.setAttribute("filterSubmittedEmpty", false);
             req.getRequestDispatcher("/matches.jsp").forward(req, resp);
         }
 
-        else {
-            optionalList = matchesService.showMatches();
-            if (optionalList.isPresent()) {
+        else if (filterParameter == null) {
+            prepareAllMatchesPageAttributes(req, pageParameter);
+            req.setAttribute("filterSubmittedEmpty", false);
+            req.getRequestDispatcher("/matches.jsp").forward(req, resp);
+        }
+    }
 
-                List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();
-                if (paginatedMatchPages.size() == 0){
-                    req.setAttribute("matchFound", false);
-                }
-                else {
-                    req.setAttribute("matchFound", true);
-                }
+    private void prepareAllMatchesPageAttributes(HttpServletRequest req, String pageParameter){
+        Optional<List<PaginatedMatchesViewDto>> optionalList;
+        optionalList = matchesService.showMatches();
+        if (optionalList.isPresent()) {
+
+            List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();
+            if (paginatedMatchPages.size() == 0){
+                req.setAttribute("matchFound", false);
+            }
+            else {
+                req.setAttribute("matchFound", true);
+            }
+            prepareMatchesPageAttributes(paginatedMatchPages, req, pageParameter);
+        }
+    }
+
+    private void prepareFilteredMatchesAttributes(HttpServletRequest req, String filterParameter, String pageParameter){
+        Optional<List<PaginatedMatchesViewDto>> optionalList = matchesService.findMatchesByPrefix(filterParameter);
+        if (optionalList.isPresent()) {
+            List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();
+            if (paginatedMatchPages.isEmpty()){
+                req.setAttribute("matchFound", false);
+            }
+            else {
                 prepareMatchesPageAttributes(paginatedMatchPages, req, pageParameter);
             }
-            req.getRequestDispatcher("/matches.jsp").forward(req, resp);
         }
+
     }
     private void prepareMatchesPageAttributes(List<PaginatedMatchesViewDto> paginatedMatchPages, HttpServletRequest req, String pageParameter){
         int totalPages = paginatedMatchPages.size();

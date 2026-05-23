@@ -5,6 +5,7 @@ import dto.view.MatchRowViewDto;
 import dto.view.PaginatedMatchesViewDto;
 import entity.Match;
 import entity.Player;
+import validator.TextValidator;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -126,6 +127,8 @@ public class MatchesService {
     }
 
     public Optional<List<PaginatedMatchesViewDto>> findMatchesByPrefix(String playerName){
+        TextValidator.validateLatinTextCharacters(playerName);
+
         Optional<List<Match>> optionalMatches = matchDao.findAll();
         if (optionalMatches.isPresent()){
 

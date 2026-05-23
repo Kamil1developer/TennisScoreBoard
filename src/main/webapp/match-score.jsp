@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=2">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=5">
     <script src="js/app.js"></script>
 </head>
 <body>
@@ -76,24 +76,26 @@
                     </c:when>
 
                     <c:when test="${matchOver}">
-                    <table>
-                        <tbody>
-                            <thead class="result">
-                                <tr>
-                                    <th class="table-text">Player</th>
-                                    <th class="table-text">Sets</th>
-                                </tr>
-                            </thead>
-                                <tr class="matchOver">
-                                    <td class="table-text">${matchOverView.winnerName}</td>
-                                    <td class="table-text">${matchOverView.winnerSets}</td>
-                                </tr>
-                                <tr class="matchOver">
-                                    <td class="table-text">${matchOverView.loserName}</td>
-                                    <td class="table-text">${matchOverView.loserSets}</td>
-                                </tr>
-                        </tbody>
-                    </table>
+                <table class="table">
+                    <thead class="result">
+                        <tr>
+                            <th class="table-text">Player</th>
+                            <th class="table-text">Sets</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="matchOver">
+                            <td class="table-text">${matchOverView.winnerName}</td>
+                            <td class="table-text">${matchOverView.winnerSets}</td>
+                        </tr>
+
+                        <tr class="matchOver">
+                            <td class="table-text">${matchOverView.loserName}</td>
+                            <td class="table-text">${matchOverView.loserSets}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
                     <a class="match-home-button" href="${pageContext.request.contextPath}/">
                         Home

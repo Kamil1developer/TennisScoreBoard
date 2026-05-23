@@ -79,7 +79,7 @@
 
 
         <c:choose>
-            <c:when test="${!matchFound}">
+            <c:when test="${matchFound eq false}">
                 <p class="match-not-found">Match Not Found</p>
             </c:when>
 

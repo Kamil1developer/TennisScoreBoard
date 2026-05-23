@@ -3,6 +3,7 @@ package servlet;
 import bootstrap.AppContainer;
 import dto.view.MatchRowViewDto;
 import dto.view.PaginatedMatchesViewDto;
+import exceptions.TextValidationException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,21 +23,20 @@ public class MatchesServlet extends HttpServlet {
         String pageParameter = req.getParameter("page");
         String filterParameter = req.getParameter("filter_by_player_name");
 
-        if (filterParameter != null && filterParameter.isEmpty()){
-            resp.sendRedirect(req.getContextPath() + "/matches");
+        try {
+            if (filterParameter != null && filterParameter.isEmpty()) {
+                resp.sendRedirect(req.getContextPath() + "/matches");
+            } else if (filterParameter != null) {
+                prepareFilteredMatchesAttributes(req, filterParameter, pageParameter);
+                req.getRequestDispatcher("/matches.jsp").forward(req, resp);
+            } else if (filterParameter == null) {
+                prepareAllMatchesPageAttributes(req, pageParameter);
+                req.getRequestDispatcher("/matches.jsp").forward(req, resp);
+            }
         }
-
-        else if (filterParameter != null) {
-            prepareFilteredMatchesAttributes(req, filterParameter, pageParameter);
-            req.setAttribute("filterIsEmpty", false);
-            req.setAttribute("filterSubmittedEmpty", false);
-            req.getRequestDispatcher("/matches.jsp").forward(req, resp);
-        }
-
-        else if (filterParameter == null) {
-            prepareAllMatchesPageAttributes(req, pageParameter);
-            req.setAttribute("filterSubmittedEmpty", false);
-            req.getRequestDispatcher("/matches.jsp").forward(req, resp);
+        catch (TextValidationException e){
+            req.setAttribute("errorMessage", e.getMessage());
+            req.getRequestDispatcher("/new-match.jsp").forward(req,resp);
         }
     }
 

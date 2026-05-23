@@ -5,6 +5,8 @@ import exceptions.NewMatchValidationException;
 
 public class NewMatchValidator {
     private static final String SAME_PLAYERS_ERROR = "Игрок не может играть сам с собой";
+
+
     private NewMatchValidator(){}
 
     public static void validatePlayersAreDifferent(NewMatchRequestDto requestDto){

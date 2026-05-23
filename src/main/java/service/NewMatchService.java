@@ -7,9 +7,8 @@ import matches.CurrentMatch;
 import scores.Score;
 import storages.CurrentMatchStorage;
 import validator.NewMatchValidator;
+import validator.TextValidator;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class NewMatchService {
@@ -34,6 +33,9 @@ public class NewMatchService {
 
         String firstPlayerName = requestDto.firstPlayerName();
         String secondPlayerName = requestDto.secondPlayerName();
+
+        TextValidator.validateLatinTextCharacters(firstPlayerName);
+        TextValidator.validateLatinTextCharacters(secondPlayerName);
 
         Player firstPlayer = new Player(firstPlayerName);
         Player secondPlayer = new Player(secondPlayerName);

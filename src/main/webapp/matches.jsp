@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -65,6 +67,7 @@
                 <th>Player Two</th>
                 <th>Winner</th>
             </tr>
+            <p style="color: red;">${errorMessage}</p>
 
             <c:forEach var="match" items="${matchesList}">
                 <tr>

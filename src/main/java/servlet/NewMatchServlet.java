@@ -3,6 +3,7 @@ package servlet;
 import bootstrap.AppContainer;
 import dto.NewMatchRequestDto;
 import exceptions.NewMatchValidationException;
+import exceptions.TextValidationException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -36,7 +37,7 @@ public class NewMatchServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/match-score?uuid=" + matchID);
 
         }
-        catch (NewMatchValidationException e){
+        catch (NewMatchValidationException | TextValidationException e){
             req.setAttribute("errorMessage", e.getMessage());
             req.getRequestDispatcher("/new-match.jsp").forward(req,resp);
         }

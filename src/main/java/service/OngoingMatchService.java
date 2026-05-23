@@ -44,6 +44,7 @@ public class OngoingMatchService {
             Score currentPlayerScore = matchContext.getFirstPlayerScore();
             Score opponentPlayerScore = matchContext.getSecondPlayerScore();
 
+            addPoints(currentPlayerScore, opponentPlayerScore);
             checkCountGames(currentPlayerScore, opponentPlayerScore);
         }
 
@@ -51,13 +52,14 @@ public class OngoingMatchService {
             Score currentPlayerScore = matchContext.getSecondPlayerScore();
             Score opponentPlayerScore = matchContext.getFirstPlayerScore();
 
+            addPoints(currentPlayerScore, opponentPlayerScore);
             checkCountGames(currentPlayerScore, opponentPlayerScore);
         }
 
 
     }
 
-    private void addPoints(Score currentPlayerScore, Score opponentPlayerScore){
+    public void addPoints(Score currentPlayerScore, Score opponentPlayerScore){
         String points = currentPlayerScore.getPoints();
         String opponentPoints = opponentPlayerScore.getPoints();
 
@@ -92,8 +94,7 @@ public class OngoingMatchService {
             opponentPlayerScore.setPoints("40");
         }
     }
-    private void checkCountGames(Score currentPlayerScore, Score opponentPlayerScore){
-        addPoints(currentPlayerScore, opponentPlayerScore);
+    public void checkCountGames(Score currentPlayerScore, Score opponentPlayerScore){
 
         if (isSetWon(currentPlayerScore, opponentPlayerScore)){
             currentPlayerScore.setGames(0);

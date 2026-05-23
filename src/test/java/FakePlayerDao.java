@@ -1,0 +1,14 @@
+import dao.PlayerDao;
+import entity.Player;
+
+public class FakePlayerDao implements PlayerDao {
+    @Override
+    public Player insert(Player player) {
+        return null;
+    }
+
+    @Override
+    public Player findByID(Long id) {
+        return null;
+    }
+}

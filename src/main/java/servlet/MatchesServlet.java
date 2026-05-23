@@ -36,7 +36,7 @@ public class MatchesServlet extends HttpServlet {
         }
         catch (TextValidationException e){
             req.setAttribute("errorMessage", e.getMessage());
-            req.getRequestDispatcher("/new-match.jsp").forward(req,resp);
+            req.getRequestDispatcher("/matches.jsp").forward(req,resp);
         }
     }
 

@@ -6,11 +6,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+
 public class Score{
     private int sets = 0;
     private int games = 0;
     private String points = "";
+    private boolean isTiebreak = false;
+
+    public Score(int sets, int games, String points){
+        this.sets = sets;
+        this.games = games;
+        this.points = points;
+    }
 
     public void addGames(int games) {
         this.games += games;

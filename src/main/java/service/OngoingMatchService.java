@@ -95,13 +95,19 @@ public class OngoingMatchService {
         }
     }
     public void checkCountGames(Score currentPlayerScore, Score opponentPlayerScore){
-
-        if (isSetWon(currentPlayerScore, opponentPlayerScore)){
+        if (isTiebreak(currentPlayerScore, opponentPlayerScore)){
+            currentPlayerScore.setTiebreak(true);
+            opponentPlayerScore.setTiebreak(true);
+        }
+        else if (isSetWon(currentPlayerScore, opponentPlayerScore)){
             currentPlayerScore.setGames(0);
             opponentPlayerScore.setGames(0);
             currentPlayerScore.addSets(1);
         }
 
+    }
+    private boolean isTiebreak(Score currentPlayerScore, Score opponentPlayerScore){
+        return (currentPlayerScore.getGames() == 6 && opponentPlayerScore.getGames() == 6);
     }
     private boolean isSetWon(Score currentPlayerScore, Score opponentPlayerScore){
         return (currentPlayerScore.getGames() == 6 && opponentPlayerScore.getGames() < 5 ||

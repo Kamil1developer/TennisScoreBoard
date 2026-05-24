@@ -60,38 +60,11 @@ public class OngoingMatchService {
     }
 
     public void addPoints(Score currentPlayerScore, Score opponentPlayerScore){
-        String points = currentPlayerScore.getPoints();
-        String opponentPoints = opponentPlayerScore.getPoints();
-
-        if (points.equals("0")){
-            currentPlayerScore.setPoints("15");
+        if (currentPlayerScore.isTiebreak() && opponentPlayerScore.isTiebreak()){
+            addTiebreakPoint(currentPlayerScore, opponentPlayerScore);
         }
-        else if (points.equals("15")){
-            currentPlayerScore.setPoints("30");
-        }
-        else if (points.equals("30")){
-            currentPlayerScore.setPoints("40");
-        }
-        else if (points.equals("40") && (!opponentPoints.equals("40") && !opponentPoints.equals("AD"))){
-            currentPlayerScore.setPoints("0");
-            opponentPlayerScore.setPoints("0");
-            currentPlayerScore.addGames(1);
-        }
-        else if (points.equals("40") && opponentPoints.equals("AD")){
-            currentPlayerScore.setPoints("40");
-            opponentPlayerScore.setPoints("40");
-        }
-        else if (points.equals("40") && opponentPoints.equals("40")){
-            currentPlayerScore.setPoints("AD");
-        }
-        else if (points.equals("AD") && opponentPoints.equals("40")){
-            currentPlayerScore.addGames(1);
-            currentPlayerScore.setPoints("0");
-            opponentPlayerScore.setPoints("0");
-        }
-        else if (points.equals("AD") && opponentPoints.equals("AD")){
-            currentPlayerScore.setPoints("40");
-            opponentPlayerScore.setPoints("40");
+        else {
+            addRegularGamePoint(currentPlayerScore, opponentPlayerScore);
         }
     }
     public void checkCountGames(Score currentPlayerScore, Score opponentPlayerScore){
@@ -105,6 +78,64 @@ public class OngoingMatchService {
             currentPlayerScore.addSets(1);
         }
 
+    }
+    private void addTiebreakPoint(Score currentPlayerScore, Score opponentPlayerScore){
+        String points = currentPlayerScore.getPoints();
+        String opponentPoints = opponentPlayerScore.getPoints();
+
+        int numberPoints = Integer.parseInt(points) + 1;
+        currentPlayerScore.setPoints(String.valueOf(numberPoints));
+
+        int numberOpponentPoints = Integer.parseInt(opponentPoints);
+
+        if ((numberPoints - numberOpponentPoints >= 2) &&
+                (numberPoints >= 7)){
+            currentPlayerScore.setTiebreak(false);
+            opponentPlayerScore.setTiebreak(false);
+            currentPlayerScore.setGames(0);
+            opponentPlayerScore.setGames(0);
+            currentPlayerScore.setPoints("0");
+            opponentPlayerScore.setPoints("0");
+            currentPlayerScore.addSets(1);
+        }
+
+
+    }
+
+    private  void addRegularGamePoint(Score currentPlayerScore, Score opponentPlayerScore){
+        String points = currentPlayerScore.getPoints();
+        String opponentPoints = opponentPlayerScore.getPoints();
+
+        if (points.equals("0")) {
+            currentPlayerScore.setPoints("15");
+        }
+        else if (points.equals("15")) {
+            currentPlayerScore.setPoints("30");
+        }
+        else if (points.equals("30")) {
+            currentPlayerScore.setPoints("40");
+        }
+        else if (points.equals("40") && (!opponentPoints.equals("40") && !opponentPoints.equals("AD"))) {
+            currentPlayerScore.setPoints("0");
+            opponentPlayerScore.setPoints("0");
+            currentPlayerScore.addGames(1);
+        }
+        else if (points.equals("40") && opponentPoints.equals("AD")) {
+            currentPlayerScore.setPoints("40");
+            opponentPlayerScore.setPoints("40");
+        }
+        else if (points.equals("40") && opponentPoints.equals("40")) {
+            currentPlayerScore.setPoints("AD");
+        }
+        else if (points.equals("AD") && opponentPoints.equals("40")) {
+            currentPlayerScore.addGames(1);
+            currentPlayerScore.setPoints("0");
+            opponentPlayerScore.setPoints("0");
+        }
+        else if (points.equals("AD") && opponentPoints.equals("AD")) {
+            currentPlayerScore.setPoints("40");
+            opponentPlayerScore.setPoints("40");
+        }
     }
     private boolean isTiebreak(Score currentPlayerScore, Score opponentPlayerScore){
         return (currentPlayerScore.getGames() == 6 && opponentPlayerScore.getGames() == 6);

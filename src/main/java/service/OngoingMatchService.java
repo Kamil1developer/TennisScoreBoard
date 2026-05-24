@@ -68,7 +68,7 @@ public class OngoingMatchService {
         }
     }
     public void checkCountGames(Score currentPlayerScore, Score opponentPlayerScore){
-        if (isTiebreak(currentPlayerScore, opponentPlayerScore)){
+        if (shouldStartTiebreak(currentPlayerScore, opponentPlayerScore)){
             currentPlayerScore.setTiebreak(true);
             opponentPlayerScore.setTiebreak(true);
         }
@@ -137,7 +137,7 @@ public class OngoingMatchService {
             opponentPlayerScore.setPoints("40");
         }
     }
-    private boolean isTiebreak(Score currentPlayerScore, Score opponentPlayerScore){
+    public boolean shouldStartTiebreak(Score currentPlayerScore, Score opponentPlayerScore){
         return (currentPlayerScore.getGames() == 6 && opponentPlayerScore.getGames() == 6);
     }
     private boolean isSetWon(Score currentPlayerScore, Score opponentPlayerScore){

@@ -5,8 +5,7 @@ import service.CompletedMatchService;
 import service.OngoingMatchService;
 import storages.CurrentMatchStorage;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OngoingMatchServiceTest {
     OngoingMatchService ongoingMatchService;
@@ -48,4 +47,52 @@ public class OngoingMatchServiceTest {
 
         assertTrue(currentPlayerGamesBeforePoint < currentPlayerGamesAfterPoint);
     }
+
+    @Test
+    void shouldStartTiebreakWhenSetScoreIsSixSix(){
+        Score currentPlayerScore = new Score(0,6,"0");
+        Score opponentPlayerScore = new Score(0,6,"0");
+
+        ongoingMatchService.checkCountGames(currentPlayerScore, opponentPlayerScore);
+        ongoingMatchService.addPoints(currentPlayerScore, opponentPlayerScore);
+
+        assertEquals("1", currentPlayerScore.getPoints());
+    }
+
+    @Test
+    void shouldWinGameWhenPlayerWinsPointAtFortyThirty(){
+        Score currentPlayerScore = new Score(0,0,"40");
+        Score opponentPlayerScore = new Score(0,0,"30");
+
+        ongoingMatchService.addPoints(currentPlayerScore, opponentPlayerScore);
+
+        assertEquals(1, currentPlayerScore.getGames());
+    }
+
+    @Test
+    void shouldNotFinishGameWhenPlayerWinsPointAtDeuce(){
+        Score currentPlayerScore = new Score(0,0,"40");
+        Score opponentPlayerScore = new Score(0,0,"40");
+
+        ongoingMatchService.addPoints(currentPlayerScore, opponentPlayerScore);
+
+        assertEquals(currentPlayerScore.getGames(), opponentPlayerScore.getGames());
+    }
+
+    @Test
+    void shouldResetPointsAfterGameIsWon(){
+        Score currentPlayerScore = new Score(0,0,"40");
+        Score opponentPlayerScore = new Score(0,0,"30");
+
+        ongoingMatchService.addPoints(currentPlayerScore, opponentPlayerScore);
+
+
+        assertAll(
+                () -> assertEquals("0", opponentPlayerScore.getPoints()),
+                () -> assertEquals("0", currentPlayerScore.getPoints())
+        );
+
+    }
+
+
 }

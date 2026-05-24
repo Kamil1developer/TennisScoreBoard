@@ -4,7 +4,6 @@ import dao.MatchDao;
 import dao.PlayerDao;
 import dao.impl.HibernateMatchDao;
 import dao.impl.HibernatePlayerDao;
-import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
 
 public class DaoContainer {

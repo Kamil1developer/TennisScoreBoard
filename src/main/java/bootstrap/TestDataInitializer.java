@@ -16,7 +16,7 @@ public class TestDataInitializer {
     public void initialize(){
         createTestMatches();
     }
-    public void createTestMatches(){
+    private void createTestMatches(){
         Transaction transaction = null;
         try (Session session = factory.openSession()) {
             Player firstPlayer;

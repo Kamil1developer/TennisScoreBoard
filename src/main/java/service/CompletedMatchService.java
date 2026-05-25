@@ -53,7 +53,7 @@ public class CompletedMatchService {
             Player winner = playerDao.findByID(matchContext.getFirstPlayerId());
 
             safe(firstPlayer, secondPlayer, winner);
-
+            currentMatchStorage.remove(matchId);
             return Optional.of(new MatchOverViewDto(winnerName, winnerSets, loserName, loserSets));
         }
         if (firstPlayerSets < secondPlayerSets) {
@@ -67,11 +67,9 @@ public class CompletedMatchService {
             Player winner = playerDao.findByID(matchContext.getSecondPlayerId());
 
             safe(firstPlayer, secondPlayer, winner);
+            currentMatchStorage.remove(matchId);
             return Optional.of(new MatchOverViewDto(winnerName, winnerSets, loserName, loserSets));
         }
-
-        currentMatchStorage.remove(matchId);
-
 
         return Optional.empty();
     }

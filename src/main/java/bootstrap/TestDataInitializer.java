@@ -49,14 +49,16 @@ public class TestDataInitializer {
                 winnerPlayer = firstPlayer;
                 match = new Match(firstPlayer, secondPlayer, winnerPlayer);
                 session.persist(match);
+
+                winnerPlayer = secondPlayer;
+                match = new Match(firstPlayer, secondPlayer, winnerPlayer);
+                session.persist(match);
                 if(i != 3) {
-                    winnerPlayer = secondPlayer;
-                    match = new Match(firstPlayer, secondPlayer, winnerPlayer);
-                    session.persist(match);
 
                     winnerPlayer = firstPlayer;
                     match = new Match(firstPlayer, secondPlayer, winnerPlayer);
                     session.persist(match);
+
                 }
             }
 

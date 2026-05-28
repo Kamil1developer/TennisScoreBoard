@@ -14,10 +14,43 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class OngoingMatchService {
+
+    // TODO: Класс содержит в себе всю бизнес-логику по подсчёту очков, геймов и сетов.
+        // Объекты, которыми он оперирует (`CurrentMatch` и `Score`), являются "анемичными" моделями —
+        // простыми контейнерами данных практически без собственного поведения.
+        // Это главная архитектурная проблема этой части логики. По этим причинам:
+        //
+        //  - Нарушение инкапсуляции: Данные (в `CurrentMatch` и `Score`) и поведение (в `OngoingMatchService`) полностью разделены.
+            //  Любой другой сервис может так же напрямую изменить счёт матча, и объект `CurrentMatch` не сможет себя защитить.
+        //  - Процедурный стиль: Вместо объектно-ориентированного подхода, где объекты сами управляют своим состоянием
+            //  (и начисление очков происходит в духе `matchScore.pointWonBy(player)`), получается процедурный код,
+            //  который манипулирует внешними структурами данных.
+        //  - Жёсткая связанность (Tight Coupling) и низкая связность (Low Cohesion):
+            //  Сервис тесно связан с внутренним устройством `OngoingMatch`. При этом логика,
+            //  относящаяся к одному понятию (счёт), размазана по разным классам (модели и сервису).
+        //  - Сложность тестирования: Чтобы протестировать один конкретный сценарий (например, переход от "ровно" к "преимуществу"),
+            //  нужно разбираться во множестве `if` и переходов по методам. Это сложно и хрупко.
+        //
+        // Как исправить: Провести рефакторинг классов моделей с переходом к "богатой" доменной модели.
+
+    // TODO: Класс отвечает за обработку счёта текущего матча (доменной модели), а также за работу с DAO и преобразование модели матча в DTO.
+        // Это нарушает Принцип единой ответственности (SRP).
+        // Также класс способствует смешению слоёв — сам использует зависимость от DAO и работает с JPA Entity.
+        // (см. файл "separation-of-concerns-principle.md" в этом же пакете)
+        // Этому классу не должна быть нужна зависимость PlayerDao.
+
+    // Все "магические" числа и строки лучше выносить в именованные константы.
+
+    // Составные условия из if лучше выносить во вспомогательный метод с понятным названием.
+        // Это улучшит читаемость кода и позволит переиспользовать повторяющиеся условия без дублирования кода.
+
+    // Этот класс и его методы не должны заниматься парсингом uuid из пришедшего с фронтенда параметра — это обязанность сервлета.
+
     private final CompletedMatchService completedMatchService;
     private final CurrentMatchStorage currentMatchStorage;
     private final PlayerDao playerDao;
 
+    // Можно использовать @RequiredArgsConstructor
     public OngoingMatchService(PlayerDao playerDao, CurrentMatchStorage currentMatchStorage, CompletedMatchService completedMatchService) {
         this.currentMatchStorage = currentMatchStorage;
         this.playerDao = playerDao;
@@ -59,6 +92,7 @@ public class OngoingMatchService {
 
     }
 
+    // По сигнатуре метода можно перепутать, кому именно начисляется очко
     public void addPoints(Score currentPlayerScore, Score opponentPlayerScore){
         if (currentPlayerScore.isTiebreak() && opponentPlayerScore.isTiebreak()){
             addTiebreakPoint(currentPlayerScore, opponentPlayerScore);
@@ -138,9 +172,13 @@ public class OngoingMatchService {
         }
     }
     public boolean shouldStartTiebreak(Score currentPlayerScore, Score opponentPlayerScore){
+        // Скобки вокруг выражения можно не писать
         return (currentPlayerScore.getGames() == 6 && opponentPlayerScore.getGames() == 6);
     }
     private boolean isSetWon(Score currentPlayerScore, Score opponentPlayerScore){
+        // Скобки вокруг выражения можно не писать
+        // Лучше проверять достижение минимального счёта для победы в сете и разницу со счётом соперника. В таком духе:
+            // currentGames == MIN_GAMES_TO_WIN && currentGames - opponentGames >= MIN_DIFF_TO_WIN_SET
         return (currentPlayerScore.getGames() == 6 && opponentPlayerScore.getGames() < 5 ||
                 currentPlayerScore.getGames() == 7 && opponentPlayerScore.getGames() == 5);
     }
@@ -152,6 +190,7 @@ public class OngoingMatchService {
         Score currentPlayerScore = currentMatch.getFirstPlayerScore();
         Score opponentPlayerScore = currentMatch.getSecondPlayerScore();
 
+        // Скобки вокруг выражения можно не писать
         return  (currentPlayerScore.getSets() == 2 || opponentPlayerScore.getSets() == 2);
     }
 

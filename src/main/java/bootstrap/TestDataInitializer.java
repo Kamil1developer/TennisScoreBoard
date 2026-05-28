@@ -9,10 +9,18 @@ import org.hibernate.Transaction;
 import java.util.List;
 
 public class TestDataInitializer {
+
+    // Более читаемым способом наполнить БД тестовыми данными при старте было бы создание файла
+        // `src/main/resources/import.sql` и настройка его автоматического выполнения:
+        // `<property name="hibernate.hbm2ddl.auto">create-drop</property>` в `hibernate.cfg.xml`.
+    // Добавил для примера файл `src/main/resources/import.sql` с комментариями.
+
     private final SessionFactory factory;
     public TestDataInitializer(SessionFactory factory){
         this.factory = factory;
     }
+
+    // Этот метод не выполняет никакой важной работы — просто оборачивает выполнение createTestMatches
     public void initialize(){
         createTestMatches();
     }
@@ -32,9 +40,11 @@ public class TestDataInitializer {
                     List.of("Mark", "Jack")
             );
 
+            // Чтобы добавить больше тестовых данных (например, для тестирования пагинации) или создать тестовый матч
+                // с какими-то определёнными данными, придётся менять сложную логику в этом цикле.
             for (int i = 0; i < 4; i++) {
                 firstPlayer = new Player(stringList.get(i).getFirst());
-                secondPlayer = new Player(stringList.get(i).get(1));
+                secondPlayer = new Player(stringList.get(i).get(1)); // Можно использовать List.getLast(): stringList.get(i).getLast()
                 session.persist(firstPlayer);
                 session.persist(secondPlayer);
 

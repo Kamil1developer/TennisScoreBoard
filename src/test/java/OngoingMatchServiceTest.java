@@ -8,6 +8,18 @@ import storages.CurrentMatchStorage;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OngoingMatchServiceTest {
+
+    // После проведения декомпозиции и рефакторинга доменных моделей, также следует изменить тесты для этой части логики.
+
+    // Невозможность протестировать OngoingMatchService без классов DAO превращает юнит-тест в интеграционный.
+        // Это исправится после переноса основной бизнес-логики в классы моделей.
+
+    // Текущий набор тестов покрывает только часть возможных сценариев. Отсутствуют тесты на:
+        // - Полный цикл игры при счете "больше-меньше" (AD -> Deuce -> AD -> Game).
+        // - Выигрыш сета (например, при счете 5-4 по геймам).
+        // - Выигрыш всего матча выигрышем второго сета.
+        // - Корректную работу тай-брейка (выигрыш при счете 7-5, продолжение игры при 6-6 и т.д.).
+
     OngoingMatchService ongoingMatchService;
 
     @BeforeEach
@@ -45,6 +57,7 @@ public class OngoingMatchServiceTest {
 
         int currentPlayerGamesAfterPoint = currentPlayerScore.getGames();
 
+        // Лучше явно проверять значение: assertEquals(1, currentPlayerGamesAfterPoint)
         assertTrue(currentPlayerGamesBeforePoint < currentPlayerGamesAfterPoint);
     }
 
@@ -76,6 +89,7 @@ public class OngoingMatchServiceTest {
 
         ongoingMatchService.addPoints(currentPlayerScore, opponentPlayerScore);
 
+        // Также стоило бы проверить, что счет в очках стал "AD" - "40"
         assertEquals(currentPlayerScore.getGames(), opponentPlayerScore.getGames());
     }
 

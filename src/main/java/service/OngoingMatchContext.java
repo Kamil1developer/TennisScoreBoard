@@ -9,6 +9,11 @@ import java.util.UUID;
 
 @Getter
 public class OngoingMatchContext{
+
+    // TODO: Этот класс является лишней абстракцией. Он смешивает слои (доменные модели и JPA Entity) и агрегирует данные,
+        // которые уже существуют в других классах — самих доменных моделях и JPA Entity.
+        // Класс не должен существовать, а использующий его код должен получать необходимые данные напрямую из классов, которым они принадлежат.
+
     private final UUID matchId;
     private final CurrentMatch currentMatch;
 

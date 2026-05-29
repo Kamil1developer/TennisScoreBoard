@@ -13,6 +13,11 @@ import jakarta.servlet.Filter;
 
 @WebFilter("/*")
 public class CorsFilter implements Filter {
+
+    // Класс нигде не используется в проекте (Tomcat находит этот класс и использует его,
+        // добавляя в цепочку фильтров для каждого запроса, но его выполнение не оказывает никакого эффекта
+        // на работу приложения), а также не выполняет никакой полезной работы, поэтому его нужно удалить.
+
     @Override
     public void doFilter(
             ServletRequest servletRequest,

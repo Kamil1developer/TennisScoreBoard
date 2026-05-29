@@ -6,9 +6,14 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @Getter
-@Setter
+@Setter // Сеттеры не используются и не нужны для DTO
 
 public class PlayerViewDto {
+
+    // Инфикс 'View' можно удалить из названия класса — этот контекст понятен из названия пакета.
+
+    // Для DTO идеально подходит record.
+
     private final Long id;
     private final String name;
 }

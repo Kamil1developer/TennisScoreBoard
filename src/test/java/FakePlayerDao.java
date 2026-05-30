@@ -3,7 +3,7 @@ import entity.Player;
 
 public class FakePlayerDao implements PlayerDao {
     @Override
-    public Player insert(Player player) {
+    public Player save(Player player) {
         return null;
     }
 

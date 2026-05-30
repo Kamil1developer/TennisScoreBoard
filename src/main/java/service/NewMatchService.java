@@ -4,8 +4,13 @@ import dao.PlayerDao;
 import dto.NewMatchRequestDto;
 import entity.Player;
 import matches.CurrentMatch;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import scores.Score;
 import storages.CurrentMatchStorage;
+import transaction.TransactionManager;
 import validator.NewMatchValidator;
 import validator.TextValidator;
 
@@ -14,9 +19,11 @@ import java.util.UUID;
 public class NewMatchService {
     private final PlayerDao playerDao;
     private final CurrentMatchStorage matchStorage;
-    public NewMatchService(PlayerDao playerDao, CurrentMatchStorage matchStorage) {
+    private final TransactionManager transactionManager;
+    public NewMatchService(PlayerDao playerDao, CurrentMatchStorage matchStorage, TransactionManager transactionManager) {
         this.playerDao = playerDao;
         this.matchStorage = matchStorage;
+        this.transactionManager = transactionManager;
     }
 
     private record Players(Player firstPlayer, Player secondPlayer){}
@@ -40,8 +47,11 @@ public class NewMatchService {
         Player firstPlayer = new Player(firstPlayerName);
         Player secondPlayer = new Player(secondPlayerName);
 
-        firstPlayer = playerDao.insert(firstPlayer);
-        secondPlayer = playerDao.insert(secondPlayer);
+        transactionManager.executeInTransaction(() -> {
+            playerDao.save(firstPlayer);
+            playerDao.save(secondPlayer);
+            return null;
+        });
 
         return new Players(firstPlayer, secondPlayer);
 

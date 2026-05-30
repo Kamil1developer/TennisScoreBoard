@@ -12,22 +12,10 @@ import java.util.List;
 public class HibernatePlayerDao implements PlayerDao {
     private final SessionFactory sessionFactory;
 
-    public Player insert(Player player) {
-        Transaction transaction = null;
-        try(Session session = sessionFactory.openSession() ) {
-            transaction = session.beginTransaction();
-            session.persist(player);
+    public Player save(Player player) {
+        sessionFactory.getCurrentSession().persist(player);
 
-            transaction.commit();
-
-            return player;
-        }
-        catch (Exception e){
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw e;
-        }
+        return player;
     }
 
     public Player findByID(Long id){

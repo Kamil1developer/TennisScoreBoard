@@ -14,7 +14,7 @@ import java.util.Optional;
 public class HibernateMatchDao implements MatchDao {
     private final SessionFactory sessionFactory;
 
-    public void insert(Match match) {
+    public void save(Match match) {
         Transaction transaction = null;
         try(Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();

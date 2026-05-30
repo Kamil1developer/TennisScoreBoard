@@ -6,6 +6,7 @@ import service.OngoingMatchService;
 import service.NewMatchService;
 import lombok.Getter;
 import storages.CurrentMatchStorage;
+import transaction.TransactionManager;
 
 @Getter
 public class ServiceContainer {
@@ -15,10 +16,11 @@ public class ServiceContainer {
     private final CompletedMatchService completedMatchService;
     private final MatchesService matchesService;
 
-    public ServiceContainer(DaoContainer daoContainer) {
+    public ServiceContainer(DaoContainer daoContainer,TransactionManager transactionManager) {
         CurrentMatchStorage matchStorage = new CurrentMatchStorage();
+
         this.matchesService = new MatchesService(daoContainer.matchDao());
-        this.newMatchService = new NewMatchService(daoContainer.playerDao(), matchStorage);
+        this.newMatchService = new NewMatchService(daoContainer.playerDao(), matchStorage, transactionManager);
         this.completedMatchService = new CompletedMatchService(daoContainer.matchDao(), daoContainer.playerDao(), matchStorage);
         this.ongoingMatchService = new OngoingMatchService(daoContainer.playerDao(),matchStorage,completedMatchService);
 

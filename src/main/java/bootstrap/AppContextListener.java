@@ -8,6 +8,7 @@ import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import transaction.HibernateTransactionManager;
 import transaction.TransactionManager;
 
 @WebListener
@@ -16,7 +17,7 @@ public class AppContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        TransactionManager transactionManager = new TransactionManager(factory);
+        TransactionManager transactionManager = new HibernateTransactionManager(factory);
 
         DaoContainer daoContainer = new DaoContainer(factory);
         ServiceContainer serviceContainer = new ServiceContainer(daoContainer, transactionManager);

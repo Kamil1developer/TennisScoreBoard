@@ -4,6 +4,7 @@ import scores.Score;
 import service.CompletedMatchService;
 import service.OngoingMatchService;
 import storages.CurrentMatchStorage;
+import transaction.TransactionManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,9 +16,12 @@ public class OngoingMatchServiceTest {
         FakePlayerDao fakePlayerDao = new FakePlayerDao();
         FakeMatchDao fakeMatchDao = new FakeMatchDao();
         CurrentMatchStorage currentMatchStorage = new CurrentMatchStorage();
-        CompletedMatchService completedMatchService = new CompletedMatchService(fakeMatchDao, fakePlayerDao, currentMatchStorage);
+        TransactionManager transactionManager = new FakeTransaction();
 
-        this.ongoingMatchService = new OngoingMatchService(fakePlayerDao,currentMatchStorage, completedMatchService);
+
+        CompletedMatchService completedMatchService = new CompletedMatchService(fakeMatchDao, fakePlayerDao, currentMatchStorage, transactionManager );
+
+        this.ongoingMatchService = new OngoingMatchService(fakePlayerDao,currentMatchStorage, completedMatchService, transactionManager);
     }
 
     @Test

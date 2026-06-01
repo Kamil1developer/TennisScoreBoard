@@ -5,6 +5,7 @@ import dto.view.MatchRowViewDto;
 import dto.view.PaginatedMatchesViewDto;
 import entity.Match;
 import entity.Player;
+import transaction.TransactionManager;
 import validator.TextValidator;
 
 import java.util.ArrayList;
@@ -15,8 +16,10 @@ import java.util.Optional;
 public class MatchesService {
 
     private final MatchDao matchDao;
-    public MatchesService(MatchDao matchDao){
+    private final TransactionManager transactionManager;
+    public MatchesService(MatchDao matchDao, TransactionManager transactionManager){
         this.matchDao = matchDao;
+        this.transactionManager = transactionManager;
     }
 
     private record MatchPaginationContext(
@@ -26,13 +29,13 @@ public class MatchesService {
     ) {}
 
     public Optional<List<PaginatedMatchesViewDto>> showMatches(){
-        Optional<List<Match>> optionalMatches = matchDao.findAll();
-        if (optionalMatches.isPresent()){
+        List<Match> matches = transactionManager.executeInTransaction(matchDao::findAll);
+        if (!matches.isEmpty()){
 
             List<PaginatedMatchesViewDto> paginatedMatchPages = new LinkedList<>();
             List<List<MatchRowViewDto>> pages = new LinkedList<>();
             List<MatchRowViewDto> matchesOnPage = new LinkedList<>();
-            List<Match> matches = optionalMatches.get();
+
             matches = matches.reversed();
 
             for (int i = 0; i < matches.size(); i++){
@@ -113,9 +116,9 @@ public class MatchesService {
 
     private void addMatchToPage(MatchPaginationContext context, int i) {
         Match match = context.matches.get(i);
-        Player firstPlayer = match.getFirstPlayerId();
-        Player secondPlayer = match.getSecondPlayerId();
-        Player winner = match.getWinnerId();
+        Player firstPlayer = match.getFirstPlayer();
+        Player secondPlayer = match.getSecondPlayer();
+        Player winner = match.getWinner();
 
         MatchRowViewDto matchRowViewDto = new MatchRowViewDto(
                 firstPlayer.getName(),
@@ -134,13 +137,13 @@ public class MatchesService {
     public Optional<List<PaginatedMatchesViewDto>> findMatchesByPrefix(String playerName){
         TextValidator.validateLatinTextCharacters(playerName);
 
-        Optional<List<Match>> optionalMatches = matchDao.findAll();
-        if (optionalMatches.isPresent()){
+        List<Match> matches = transactionManager.executeInTransaction(matchDao::findAll);
+        if (!matches.isEmpty()){
 
             List<PaginatedMatchesViewDto> paginatedMatchPages = new LinkedList<>();
             List<List<MatchRowViewDto>> pages = new LinkedList<>();
             List<MatchRowViewDto> matchesOnPage = new LinkedList<>();
-            List<Match> matches = optionalMatches.get();
+
             matches = matches.reversed();
 
             for (int i = 0; i < matches.size(); i++){
@@ -168,9 +171,9 @@ public class MatchesService {
 
     private void addMatchToPageIfMatchesPrefix(MatchPaginationContext context, int i, String playerName){
         Match match = context.matches.get(i);
-        Player firstPlayer = match.getFirstPlayerId();
-        Player secondPlayer = match.getSecondPlayerId();
-        Player winner = match.getWinnerId();
+        Player firstPlayer = match.getFirstPlayer();
+        Player secondPlayer = match.getSecondPlayer();
+        Player winner = match.getWinner();
 
         if (playerName.equals(firstPlayer.getName()) ||
                 playerName.equals(secondPlayer.getName())) {

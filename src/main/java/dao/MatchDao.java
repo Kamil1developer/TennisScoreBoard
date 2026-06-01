@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MatchDao {
-    public void save(Match match);
-    public void findById();
-    public Optional<List<Match>> findAll();
+    void save(Match match);
+    List<Match> findAll();
 }

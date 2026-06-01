@@ -15,37 +15,12 @@ public class HibernateMatchDao implements MatchDao {
     private final SessionFactory sessionFactory;
 
     public void save(Match match) {
-        Transaction transaction = null;
-        try(Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.persist(match);
-
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
+        sessionFactory.getCurrentSession().persist(match);
     }
 
-    public void findById() {
+    public List<Match> findAll() {
+            List<Match> matches = sessionFactory.getCurrentSession().createQuery("from Match", Match.class).getResultList();
 
-    }
-
-    public Optional<List<Match>> findAll() {
-        Transaction transaction = null;
-
-        try(Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            List<Match> matches = session.createQuery("from Match", Match.class).getResultList();
-
-            transaction.commit();
-            return Optional.of(matches);
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
-        return Optional.empty();
+            return matches;
     }
 }

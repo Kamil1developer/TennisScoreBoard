@@ -19,20 +19,6 @@ public class HibernatePlayerDao implements PlayerDao {
     }
 
     public Player findByID(Long id){
-        Transaction transaction = null;
-        try(Session session = sessionFactory.openSession() ) {
-            transaction = session.beginTransaction();
-            Player player = session.get(Player.class, id);
-
-            transaction.commit();
-
-            return player;
-        }
-        catch (Exception e){
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw e;
-        }
+        return sessionFactory.getCurrentSession().get(Player.class, id);
     }
 }

@@ -6,17 +6,13 @@ import java.util.Optional;
 
 public class FakeMatchDao implements MatchDao {
     @Override
-    public void insert(Match match) {
+    public void save(Match match) {
 
     }
 
-    @Override
-    public void findById() {
-
-    }
 
     @Override
-    public Optional<List<Match>> findAll() {
-        return Optional.empty();
+    public List<Match> findAll() {
+        return List.of();
     }
 }

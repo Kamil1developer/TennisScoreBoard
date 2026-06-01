@@ -19,10 +19,10 @@ public class ServiceContainer {
     public ServiceContainer(DaoContainer daoContainer,TransactionManager transactionManager) {
         CurrentMatchStorage matchStorage = new CurrentMatchStorage();
 
-        this.matchesService = new MatchesService(daoContainer.matchDao());
+        this.matchesService = new MatchesService(daoContainer.matchDao(), transactionManager);
         this.newMatchService = new NewMatchService(daoContainer.playerDao(), matchStorage, transactionManager);
-        this.completedMatchService = new CompletedMatchService(daoContainer.matchDao(), daoContainer.playerDao(), matchStorage);
-        this.ongoingMatchService = new OngoingMatchService(daoContainer.playerDao(),matchStorage,completedMatchService);
+        this.completedMatchService = new CompletedMatchService(daoContainer.matchDao(), daoContainer.playerDao(), matchStorage, transactionManager);
+        this.ongoingMatchService = new OngoingMatchService(daoContainer.playerDao(),matchStorage,completedMatchService, transactionManager);
 
     }
 }

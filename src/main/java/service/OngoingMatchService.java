@@ -1,6 +1,7 @@
 package service;
 
 import dao.PlayerDao;
+import dto.PlayersPair;
 import dto.view.CurrentMatchViewDto;
 import dto.view.MatchOverViewDto;
 import dto.view.PlayerViewDto;
@@ -9,6 +10,7 @@ import entity.Player;
 import matches.CurrentMatch;
 import scores.Score;
 import storages.CurrentMatchStorage;
+import transaction.TransactionManager;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -17,11 +19,13 @@ public class OngoingMatchService {
     private final CompletedMatchService completedMatchService;
     private final CurrentMatchStorage currentMatchStorage;
     private final PlayerDao playerDao;
+    private final TransactionManager transactionManager;
 
-    public OngoingMatchService(PlayerDao playerDao, CurrentMatchStorage currentMatchStorage, CompletedMatchService completedMatchService) {
+    public OngoingMatchService(PlayerDao playerDao, CurrentMatchStorage currentMatchStorage, CompletedMatchService completedMatchService, TransactionManager transactionManager) {
         this.currentMatchStorage = currentMatchStorage;
         this.playerDao = playerDao;
         this.completedMatchService = completedMatchService;
+        this.transactionManager = transactionManager;
     }
     private OngoingMatchContext loadOngoingMatchContext(UUID matchId){
         CurrentMatch currentMatch = currentMatchStorage.getMap().get(matchId);
@@ -29,10 +33,14 @@ public class OngoingMatchService {
         Long firstPlayerId = currentMatch.getFirstPlayerId();
         Long secondPlayerId = currentMatch.getSecondPlayerId();
 
-        Player firstPlayer = playerDao.findByID(firstPlayerId);
-        Player secondPlayer = playerDao.findByID(secondPlayerId);
+        PlayersPair playersPair = transactionManager.executeInTransaction(() -> {
+                    Player firstPlayer = playerDao.findByID(firstPlayerId);
+                    Player secondPlayer = playerDao.findByID(secondPlayerId);
+                    return new PlayersPair(firstPlayer, secondPlayer);
+                }
+                );
 
-        return new OngoingMatchContext(currentMatch, matchId, firstPlayer, secondPlayer);
+        return new OngoingMatchContext(currentMatch, matchId, playersPair.firstPlayer(), playersPair.secondPlayer());
     }
 
     public void addScore(String uuid, String playerId){

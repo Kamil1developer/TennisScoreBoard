@@ -3,7 +3,7 @@ package service;
 import entity.Player;
 import lombok.Getter;
 import matches.CurrentMatch;
-import scores.Score;
+import model.Score;
 
 import java.util.UUID;
 

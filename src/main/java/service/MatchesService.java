@@ -1,8 +1,8 @@
 package service;
 
 import dao.MatchDao;
-import dto.view.MatchRowViewDto;
-import dto.view.PaginatedMatchesViewDto;
+import dto.view.MatchRowDto;
+import dto.view.PaginatedMatchesDto;
 import entity.Match;
 import entity.Player;
 import transaction.TransactionManager;
@@ -24,17 +24,17 @@ public class MatchesService {
 
     private record MatchPaginationContext(
             List<Match> matches,
-            List<MatchRowViewDto> matchesOnPage,
-            List<List<MatchRowViewDto>> matchPages
+            List<MatchRowDto> matchesOnPage,
+            List<List<MatchRowDto>> matchPages
     ) {}
 
-    public Optional<List<PaginatedMatchesViewDto>> showMatches(){
+    public Optional<List<PaginatedMatchesDto>> showMatches(){
         List<Match> matches = transactionManager.executeInTransaction(matchDao::findAll);
         if (!matches.isEmpty()){
 
-            List<PaginatedMatchesViewDto> paginatedMatchPages = new LinkedList<>();
-            List<List<MatchRowViewDto>> pages = new LinkedList<>();
-            List<MatchRowViewDto> matchesOnPage = new LinkedList<>();
+            List<PaginatedMatchesDto> paginatedMatchPages = new LinkedList<>();
+            List<List<MatchRowDto>> pages = new LinkedList<>();
+            List<MatchRowDto> matchesOnPage = new LinkedList<>();
 
             matches = matches.reversed();
 
@@ -65,13 +65,13 @@ public class MatchesService {
         return  Optional.empty();
     }
 
-    private void buildPaginatedMatchesView(MatchPaginationContext context, List<PaginatedMatchesViewDto> paginatedMatchPages, int totalPages){
+    private void buildPaginatedMatchesView(MatchPaginationContext context, List<PaginatedMatchesDto> paginatedMatchPages, int totalPages){
 
         for (int i = 0; i < totalPages; i++){
 
             int pageNumber = i + 1;
             if (pageNumber == 1 && pageNumber < totalPages){
-                PaginatedMatchesViewDto paginatedMatchPage = new PaginatedMatchesViewDto(
+                PaginatedMatchesDto paginatedMatchPage = new PaginatedMatchesDto(
                         context.matchPages.get(i),
                         pageNumber,
                         false,
@@ -82,7 +82,7 @@ public class MatchesService {
 
             }
             else if (pageNumber > 1 && pageNumber < totalPages){
-                PaginatedMatchesViewDto paginatedMatchPage = new PaginatedMatchesViewDto(
+                PaginatedMatchesDto paginatedMatchPage = new PaginatedMatchesDto(
                         context.matchPages.get(i),
                         pageNumber,
                         true,
@@ -92,7 +92,7 @@ public class MatchesService {
                 paginatedMatchPages.add(paginatedMatchPage);
             }
             else if (pageNumber > 1 && pageNumber == totalPages){
-                PaginatedMatchesViewDto paginatedMatchPage = new PaginatedMatchesViewDto(
+                PaginatedMatchesDto paginatedMatchPage = new PaginatedMatchesDto(
                         context.matchPages.get(i),
                         pageNumber,
                         true,
@@ -102,7 +102,7 @@ public class MatchesService {
                 paginatedMatchPages.add(paginatedMatchPage);
             }
             else if (pageNumber == 1){
-                PaginatedMatchesViewDto paginatedMatchPage = new PaginatedMatchesViewDto(
+                PaginatedMatchesDto paginatedMatchPage = new PaginatedMatchesDto(
                         context.matchPages.get(i),
                         pageNumber,
                         false,
@@ -120,7 +120,7 @@ public class MatchesService {
         Player secondPlayer = match.getSecondPlayer();
         Player winner = match.getWinner();
 
-        MatchRowViewDto matchRowViewDto = new MatchRowViewDto(
+        MatchRowDto matchRowViewDto = new MatchRowDto(
                 firstPlayer.getName(),
                 secondPlayer.getName(),
                 winner.getName()
@@ -134,15 +134,15 @@ public class MatchesService {
         }
     }
 
-    public Optional<List<PaginatedMatchesViewDto>> findMatchesByPrefix(String playerName){
+    public Optional<List<PaginatedMatchesDto>> findMatchesByPrefix(String playerName){
         TextValidator.validateLatinTextCharacters(playerName);
 
         List<Match> matches = transactionManager.executeInTransaction(matchDao::findAll);
         if (!matches.isEmpty()){
 
-            List<PaginatedMatchesViewDto> paginatedMatchPages = new LinkedList<>();
-            List<List<MatchRowViewDto>> pages = new LinkedList<>();
-            List<MatchRowViewDto> matchesOnPage = new LinkedList<>();
+            List<PaginatedMatchesDto> paginatedMatchPages = new LinkedList<>();
+            List<List<MatchRowDto>> pages = new LinkedList<>();
+            List<MatchRowDto> matchesOnPage = new LinkedList<>();
 
             matches = matches.reversed();
 
@@ -178,7 +178,7 @@ public class MatchesService {
         if (playerName.equals(firstPlayer.getName()) ||
                 playerName.equals(secondPlayer.getName())) {
 
-            MatchRowViewDto matchRowViewDto = new MatchRowViewDto(
+            MatchRowDto matchRowViewDto = new MatchRowDto(
                     firstPlayer.getName(),
                     secondPlayer.getName(),
                     winner.getName()

@@ -2,13 +2,13 @@ package service;
 
 import dao.PlayerDao;
 import dto.PlayersPair;
-import dto.view.CurrentMatchViewDto;
-import dto.view.MatchOverViewDto;
-import dto.view.PlayerViewDto;
+import dto.view.CurrentMatchDto;
+import dto.view.MatchOverDto;
+import dto.view.PlayerDto;
 import entity.Player;
 
 import matches.CurrentMatch;
-import scores.Score;
+import model.Score;
 import storages.CurrentMatchStorage;
 import transaction.TransactionManager;
 
@@ -163,20 +163,20 @@ public class OngoingMatchService {
         return  (currentPlayerScore.getSets() == 2 || opponentPlayerScore.getSets() == 2);
     }
 
-    public CurrentMatchViewDto getMatchView(String uuid) {
+    public CurrentMatchDto getMatchView(String uuid) {
         UUID matchId = UUID.fromString(uuid);
 
         OngoingMatchContext matchContext = loadOngoingMatchContext(matchId);
 
-        PlayerViewDto firstPlayerDto = new PlayerViewDto(
+        PlayerDto firstPlayerDto = new PlayerDto(
                 matchContext.getFirstPlayerId(),
                 matchContext.getFirstPlayer().getName()
         );
-        PlayerViewDto secondPlayerDto = new PlayerViewDto(
+        PlayerDto secondPlayerDto = new PlayerDto(
                 matchContext.getSecondPlayerId(),
                 matchContext.getSecondPlayer().getName()
         );
-        return new CurrentMatchViewDto(
+        return new CurrentMatchDto(
                 matchId,
                 firstPlayerDto,
                 secondPlayerDto,
@@ -185,7 +185,7 @@ public class OngoingMatchService {
         );
     }
 
-    public Optional<MatchOverViewDto> getMatchOverView(String uuid){
+    public Optional<MatchOverDto> getMatchOverView(String uuid){
         UUID matchId = UUID.fromString(uuid);
         CurrentMatch currentMatch = currentMatchStorage.getMap().get(matchId);
 

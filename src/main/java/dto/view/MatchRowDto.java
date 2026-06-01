@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class MatchRowViewDto{
+public class MatchRowDto {
     private String firstPlayerName;
     private String secondPlayerName;
     private String winnerName;

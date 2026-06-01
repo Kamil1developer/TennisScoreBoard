@@ -2,11 +2,10 @@ package dto.view;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
-public class MatchOverViewDto {
+public class MatchOverDto {
         private final String winnerName;
         private final int winnerSets;
         private final String loserName;

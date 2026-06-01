@@ -1,4 +1,4 @@
-package scores;
+package model;
 
 import lombok.Getter;
 import lombok.Setter;

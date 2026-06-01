@@ -7,8 +7,8 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class PaginatedMatchesViewDto {
-    private final List<MatchRowViewDto> matchesList;
+public class PaginatedMatchesDto {
+    private final List<MatchRowDto> matchesList;
     private final int currentPage;
     private final boolean hasPrevious;
     private final boolean hasNext;

@@ -1,8 +1,8 @@
 package servlet;
 
 import bootstrap.AppContainer;
-import dto.view.MatchRowViewDto;
-import dto.view.PaginatedMatchesViewDto;
+import dto.view.MatchRowDto;
+import dto.view.PaginatedMatchesDto;
 import exceptions.TextValidationException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -41,11 +41,11 @@ public class MatchesServlet extends HttpServlet {
     }
 
     private void prepareAllMatchesPageAttributes(HttpServletRequest req, String pageParameter){
-        Optional<List<PaginatedMatchesViewDto>> optionalList;
+        Optional<List<PaginatedMatchesDto>> optionalList;
         optionalList = matchesService.showMatches();
         if (optionalList.isPresent()) {
 
-            List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();
+            List<PaginatedMatchesDto> paginatedMatchPages = optionalList.get();
             if (paginatedMatchPages.size() == 0){
                 req.setAttribute("matchFound", false);
             }
@@ -57,9 +57,9 @@ public class MatchesServlet extends HttpServlet {
     }
 
     private void prepareFilteredMatchesAttributes(HttpServletRequest req, String filterParameter, String pageParameter){
-        Optional<List<PaginatedMatchesViewDto>> optionalList = matchesService.findMatchesByPrefix(filterParameter);
+        Optional<List<PaginatedMatchesDto>> optionalList = matchesService.findMatchesByPrefix(filterParameter);
         if (optionalList.isPresent()) {
-            List<PaginatedMatchesViewDto> paginatedMatchPages = optionalList.get();
+            List<PaginatedMatchesDto> paginatedMatchPages = optionalList.get();
             if (paginatedMatchPages.isEmpty()){
                 req.setAttribute("matchFound", false);
             }
@@ -69,20 +69,20 @@ public class MatchesServlet extends HttpServlet {
         }
 
     }
-    private void prepareMatchesPageAttributes(List<PaginatedMatchesViewDto> paginatedMatchPages, HttpServletRequest req, String pageParameter){
+    private void prepareMatchesPageAttributes(List<PaginatedMatchesDto> paginatedMatchPages, HttpServletRequest req, String pageParameter){
         int totalPages = paginatedMatchPages.size();
         req.setAttribute("totalPages", totalPages);
         if (pageParameter == null){
-            PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.getFirst();
-            List<MatchRowViewDto> matchesList = paginatedMatchPage.getMatchesList();
+            PaginatedMatchesDto paginatedMatchPage = paginatedMatchPages.getFirst();
+            List<MatchRowDto> matchesList = paginatedMatchPage.getMatchesList();
 
             req.setAttribute("matchesList", matchesList);
             req.setAttribute("matchesPage", paginatedMatchPage);
         }
         else {
             int pageNumber = Integer.parseInt(pageParameter);
-            PaginatedMatchesViewDto paginatedMatchPage = paginatedMatchPages.get(pageNumber - 1);
-            List<MatchRowViewDto> matchesList = paginatedMatchPage.getMatchesList();
+            PaginatedMatchesDto paginatedMatchPage = paginatedMatchPages.get(pageNumber - 1);
+            List<MatchRowDto> matchesList = paginatedMatchPage.getMatchesList();
 
             req.setAttribute("matchesList", matchesList);
             req.setAttribute("matchesPage", paginatedMatchPage);

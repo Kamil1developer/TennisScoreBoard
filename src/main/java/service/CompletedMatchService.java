@@ -3,14 +3,13 @@ package service;
 import dao.MatchDao;
 import dao.PlayerDao;
 import dto.PlayersPair;
-import dto.view.MatchOverViewDto;
+import dto.view.MatchOverDto;
 import entity.Match;
 import entity.Player;
 import matches.CurrentMatch;
 import storages.CurrentMatchStorage;
 import transaction.TransactionManager;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -54,7 +53,7 @@ public class CompletedMatchService {
         return new OngoingMatchContext(currentMatch, matchId, playersPair.firstPlayer(), playersPair.secondPlayer());
     }
 
-    public Optional<MatchOverViewDto> safeCompletedMatch(int firstPlayerSets, int secondPlayerSets, UUID matchId) {
+    public Optional<MatchOverDto> safeCompletedMatch(int firstPlayerSets, int secondPlayerSets, UUID matchId) {
         OngoingMatchContext matchContext = loadOngoingMatchContext(matchId);
         CurrentMatch currentMatch = currentMatchStorage.getMap().get(matchId);
         if (firstPlayerSets > secondPlayerSets) {
@@ -75,7 +74,7 @@ public class CompletedMatchService {
                     completedMatchPlayers.winner);
 
             currentMatchStorage.remove(matchId);
-            return Optional.of(new MatchOverViewDto(winnerName, winnerSets, loserName, loserSets));
+            return Optional.of(new MatchOverDto(winnerName, winnerSets, loserName, loserSets));
         }
         if (firstPlayerSets < secondPlayerSets) {
             String winnerName = matchContext.getSecondPlayer().getName();
@@ -95,7 +94,7 @@ public class CompletedMatchService {
                     completedMatchPlayers.winner);
 
             currentMatchStorage.remove(matchId);
-            return Optional.of(new MatchOverViewDto(winnerName, winnerSets, loserName, loserSets));
+            return Optional.of(new MatchOverDto(winnerName, winnerSets, loserName, loserSets));
         }
 
         return Optional.empty();

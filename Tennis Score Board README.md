@@ -47,7 +47,7 @@ src/main/java
 ├── filter          # servlet-фильтры
 ├── infrastructure  # контейнеры DAO/Service и инфраструктурные классы
 ├── matches         # модель текущего матча
-├── scores          # доменная модель счёта
+├── model          # доменная модель счёта
 ├── service         # бизнес-логика приложения
 ├── servlet         # HTTP-контроллеры
 ├── storages        # in-memory хранилище текущих матчей

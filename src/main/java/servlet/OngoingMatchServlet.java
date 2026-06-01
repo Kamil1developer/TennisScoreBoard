@@ -1,8 +1,8 @@
 package servlet;
 
 import bootstrap.AppContainer;
-import dto.view.CurrentMatchViewDto;
-import dto.view.MatchOverViewDto;
+import dto.view.CurrentMatchDto;
+import dto.view.MatchOverDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,7 +21,7 @@ public class OngoingMatchServlet extends HttpServlet {
             throws ServletException, IOException {
         String uuid = req.getParameter("uuid");
 
-        CurrentMatchViewDto matchViewDto = ongoingMatchService.getMatchView(uuid);
+        CurrentMatchDto matchViewDto = ongoingMatchService.getMatchView(uuid);
 
         renderView(req,resp, matchViewDto);
     }
@@ -35,14 +35,14 @@ public class OngoingMatchServlet extends HttpServlet {
         ongoingMatchService.addScore(uuid, playerId);
 
         if (!ongoingMatchService.hasMatchWinner(uuid)) {
-            CurrentMatchViewDto matchViewDto = ongoingMatchService.getMatchView(uuid);
+            CurrentMatchDto matchViewDto = ongoingMatchService.getMatchView(uuid);
 
             renderView(req, resp, matchViewDto);
         }
         else {
-            Optional<MatchOverViewDto> optional = ongoingMatchService.getMatchOverView(uuid);
+            Optional<MatchOverDto> optional = ongoingMatchService.getMatchOverView(uuid);
             if (optional.isPresent()) {
-                MatchOverViewDto matchOverViewDto = optional.get();
+                MatchOverDto matchOverViewDto = optional.get();
                 req.setAttribute("matchInProgress", false);
                 req.setAttribute("matchOver", true);
                 req.setAttribute("matchOverView", matchOverViewDto);
@@ -53,7 +53,7 @@ public class OngoingMatchServlet extends HttpServlet {
     }
     private void renderView(HttpServletRequest req,
                             HttpServletResponse resp,
-                            CurrentMatchViewDto matchViewDto) throws ServletException, IOException {
+                            CurrentMatchDto matchViewDto) throws ServletException, IOException {
         req.setAttribute("matchInProgress", true);
         req.setAttribute("currentMatchView", matchViewDto);
         req.getRequestDispatcher("/match-score.jsp").forward(req,resp);

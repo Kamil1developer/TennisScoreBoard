@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import scores.Score;
+import model.Score;
 import service.CompletedMatchService;
 import service.OngoingMatchService;
 import storages.CurrentMatchStorage;

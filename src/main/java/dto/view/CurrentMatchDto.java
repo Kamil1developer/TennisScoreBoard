@@ -1,6 +1,6 @@
 package dto.view;
 
-import scores.Score;
+import model.Score;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,10 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @Getter
-public class CurrentMatchViewDto {
+public class CurrentMatchDto {
     private final UUID uuid;
-    private final PlayerViewDto firstPlayerDto;
-    private final PlayerViewDto secondPlayerDto;
+    private final PlayerDto firstPlayerDto;
+    private final PlayerDto secondPlayerDto;
     private final Score firstPlayerScore;
     private final Score secondPlayerScore;
 }

@@ -1,5 +1,4 @@
 package dto.view;
-import entity.Player;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class PlayerViewDto {
+public class PlayerDto {
     private final Long id;
     private final String name;
 }

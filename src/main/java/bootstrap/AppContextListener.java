@@ -24,8 +24,6 @@ public class AppContextListener implements ServletContextListener {
         AppContainer container = new AppContainer(serviceContainer, daoContainer);
         servletContext.setAttribute("appContainer", container);
 
-        TestDataInitializer dataInitializer = new TestDataInitializer(factory);
-        dataInitializer.initialize();
 
     }
 }

@@ -1,3 +1,4 @@
+import model.MatchScore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import model.Score;
@@ -31,7 +32,9 @@ public class OngoingMatchServiceTest {
 
         int currentPlayerGamesBeforePoint = currentPlayerScore.getGames();
 
-        ongoingMatchService.addPoints(currentPlayerScore, opponentPlayerScore);
+        MatchScore matchScore = new MatchScore(currentPlayerScore, opponentPlayerScore);
+
+        matchScore.addPoints();
 
         int currentPlayerGamesAfterPoint = currentPlayerScore.getGames();
 
@@ -45,7 +48,9 @@ public class OngoingMatchServiceTest {
 
         int currentPlayerGamesBeforePoint = currentPlayerScore.getGames();
 
-        ongoingMatchService.addPoints(currentPlayerScore, opponentPlayerScore);
+        MatchScore matchScore = new MatchScore(currentPlayerScore, opponentPlayerScore);
+
+        matchScore.addPoints();
 
         int currentPlayerGamesAfterPoint = currentPlayerScore.getGames();
 
@@ -57,8 +62,10 @@ public class OngoingMatchServiceTest {
         Score currentPlayerScore = new Score(0,6,"0");
         Score opponentPlayerScore = new Score(0,6,"0");
 
-        ongoingMatchService.checkCountGames(currentPlayerScore, opponentPlayerScore);
-        ongoingMatchService.addPoints(currentPlayerScore, opponentPlayerScore);
+        MatchScore matchScore = new MatchScore(currentPlayerScore, opponentPlayerScore);
+
+        matchScore.checkCountGames();
+        matchScore.addPoints();
 
         assertEquals("1", currentPlayerScore.getPoints());
     }
@@ -68,7 +75,9 @@ public class OngoingMatchServiceTest {
         Score currentPlayerScore = new Score(0,0,"40");
         Score opponentPlayerScore = new Score(0,0,"30");
 
-        ongoingMatchService.addPoints(currentPlayerScore, opponentPlayerScore);
+        MatchScore matchScore = new MatchScore(currentPlayerScore, opponentPlayerScore);
+
+        matchScore.addPoints();
 
         assertEquals(1, currentPlayerScore.getGames());
     }
@@ -78,7 +87,9 @@ public class OngoingMatchServiceTest {
         Score currentPlayerScore = new Score(0,0,"40");
         Score opponentPlayerScore = new Score(0,0,"40");
 
-        ongoingMatchService.addPoints(currentPlayerScore, opponentPlayerScore);
+        MatchScore matchScore = new MatchScore(currentPlayerScore, opponentPlayerScore);
+
+        matchScore.addPoints();
 
         assertEquals(currentPlayerScore.getGames(), opponentPlayerScore.getGames());
     }
@@ -88,7 +99,9 @@ public class OngoingMatchServiceTest {
         Score currentPlayerScore = new Score(0,0,"40");
         Score opponentPlayerScore = new Score(0,0,"30");
 
-        ongoingMatchService.addPoints(currentPlayerScore, opponentPlayerScore);
+        MatchScore matchScore = new MatchScore(currentPlayerScore, opponentPlayerScore);
+
+        matchScore.addPoints();
 
 
         assertAll(

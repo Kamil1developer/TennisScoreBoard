@@ -29,40 +29,42 @@ public class MatchesService {
     ) {}
 
     public Optional<List<PaginatedMatchesDto>> showMatches(){
-        List<Match> matches = transactionManager.executeInTransaction(matchDao::findAll);
-        if (!matches.isEmpty()){
+        return transactionManager.executeInTransaction(() -> {
+            List<Match> matches = matchDao.findAll();
+            if (!matches.isEmpty()){
 
-            List<PaginatedMatchesDto> paginatedMatchPages = new LinkedList<>();
-            List<List<MatchRowDto>> pages = new LinkedList<>();
-            List<MatchRowDto> matchesOnPage = new LinkedList<>();
+                List<PaginatedMatchesDto> paginatedMatchPages = new LinkedList<>();
+                List<List<MatchRowDto>> pages = new LinkedList<>();
+                List<MatchRowDto> matchesOnPage = new LinkedList<>();
 
-            matches = matches.reversed();
+                matches = matches.reversed();
 
-            for (int i = 0; i < matches.size(); i++){
-                MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
-                addMatchToPage(context, i);
+                for (int i = 0; i < matches.size(); i++){
+                    MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
+                    addMatchToPage(context, i);
+                }
+
+                if (!matchesOnPage.isEmpty()) {
+                    pages.add(new ArrayList<>(matchesOnPage));
+
+                    matchesOnPage.clear();
+                }
+
+                if (!pages.isEmpty()){
+                    int totalPages;
+                    int matchesCount = matches.size();
+                    int pagesCount = pages.size();
+
+                    totalPages = pagesCount;
+
+                    MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
+                    buildPaginatedMatchesView(context, paginatedMatchPages, totalPages);
+                    matchesOnPage.clear();
+                }
+                return Optional.of(paginatedMatchPages);
             }
-
-            if (!matchesOnPage.isEmpty()) {
-                pages.add(new ArrayList<>(matchesOnPage));
-
-                matchesOnPage.clear();
-            }
-
-            if (!pages.isEmpty()){
-                int totalPages;
-                int matchesCount = matches.size();
-                int pagesCount = pages.size();
-
-                totalPages = pagesCount;
-
-                MatchPaginationContext context = new MatchPaginationContext(matches, matchesOnPage, pages);
-                buildPaginatedMatchesView(context, paginatedMatchPages, totalPages);
-                matchesOnPage.clear();
-            }
-            return Optional.of(paginatedMatchPages);
-        }
-        return  Optional.empty();
+            return  Optional.empty();
+        });
     }
 
     private void buildPaginatedMatchesView(MatchPaginationContext context, List<PaginatedMatchesDto> paginatedMatchPages, int totalPages){

@@ -5,7 +5,7 @@ import org.hibernate.annotations.Check;
 import org.hibernate.annotations.Fetch;
 
 @Entity
-@Table(name = "Matches")
+@Table(name = "matches")
 @Getter
 @Check(constraints = "first_player_id <> second_player_id AND winner_id IN (first_player_id, second_player_id)")
 
